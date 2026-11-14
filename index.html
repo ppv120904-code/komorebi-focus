@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="linen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komorebi Focus — Pomodoro Consciente & Santuario de Estudio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fraunces (Editorial cálida), Plus Jakarta Sans (UI limpia) y JetBrains Mono (Reloj) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. SISTEMA DE PALETAS CÁLIDAS Y DE BAJA FATIGA VISUAL (ERGONOMÍA OCULAR)
+           Sin blancos puros (#FFF) ni neones estridentes. Tonos papel, salvia, arcilla y café.
+           ========================================================================== */
+        :root, [data-theme="linen"] {
+            --bg-main: #F4EFE6;           /* Papel lino cálido */
+            --bg-card: rgba(251, 248, 242, 0.88);
+            --bg-subtle: #EAE3D5;         /* Arena suave */
+            --text-main: #2C2623;         /* Tinta expreso cálida */
+            --text-muted: #70665E;        /* Piedra cálida */
+            --accent-primary: #5A7A60;    /* Verde salvia botánico */
+            --accent-secondary: #C67D5A;  /* Terracota suave */
+            --accent-soft: rgba(90, 122, 96, 0.14);
+            --border-warm: rgba(44, 38, 35, 0.11);
+            --shadow-warm: 0 12px 32px -8px rgba(44, 38, 35, 0.07);
+            --particle-primary: rgba(90, 122, 96, 0.35);
+            --particle-secondary: rgba(198, 125, 90, 0.35);
+        }
+
+        [data-theme="nightcafe"] {
+            --bg-main: #1C1917;           /* Carbón cálido / Madera oscura */
+            --bg-card: rgba(36, 32, 29, 0.90);
+            --bg-subtle: #2D2723;         /* Café tostado */
+            --text-main: #EAE2D7;         /* Crema suave */
+            --text-muted: #A3988D;        /* Gris cálido */
+            --accent-primary: #D48C6A;    /* Ámbar terracota */
+            --accent-secondary: #7E9F83;  /* Salvia nocturna */
+            --accent-soft: rgba(212, 140, 106, 0.16);
+            --border-warm: rgba(234, 226, 215, 0.10);
+            --shadow-warm: 0 16px 36px -8px rgba(0, 0, 0, 0.45);
+            --particle-primary: rgba(212, 140, 106, 0.35);
+            --particle-secondary: rgba(234, 179, 8, 0.28);
+        }
+
+        [data-theme="kyoto"] {
+            --bg-main: #F3E9DC;           /* Pergamino de otoño */
+            --bg-card: rgba(250, 243, 234, 0.90);
+            --bg-subtle: #E7D8C5;
+            --text-main: #362721;         /* Madera de cedro */
+            --text-muted: #7C6356;
+            --accent-primary: #B85D3B;    /* Arce japonés (Momiji) */
+            --accent-secondary: #D49A45;  /* Ocre ginkgo */
+            --accent-soft: rgba(184, 93, 59, 0.14);
+            --border-warm: rgba(54, 39, 33, 0.12);
+            --shadow-warm: 0 12px 32px -8px rgba(54, 39, 33, 0.08);
+            --particle-primary: rgba(184, 93, 59, 0.38);
+            --particle-secondary: rgba(212, 154, 69, 0.38);
+        }
+
+        [data-theme="mistforest"] {
+            --bg-main: #E7ECE8;           /* Niebla de eucalipto */
+            --bg-card: rgba(244, 247, 244, 0.88);
+            --bg-subtle: #D8E1DA;
+            --text-main: #213027;         /* Pino profundo */
+            --text-muted: #5B6E62;
+            --accent-primary: #436850;    /* Musgo sereno */
+            --accent-secondary: #8C7A6B;  /* Corteza cálida */
+            --accent-soft: rgba(67, 104, 80, 0.14);
+            --border-warm: rgba(33, 48, 39, 0.11);
+            --shadow-warm: 0 12px 32px -8px rgba(33, 48, 39, 0.07);
+            --particle-primary: rgba(67, 104, 80, 0.35);
+            --particle-secondary: rgba(140, 122, 107, 0.35);
+        }
+
+        [data-theme="washi"] {
+            --bg-main: #EFEBE1;           /* Papel arroz tradicional */
+            --bg-card: rgba(248, 245, 238, 0.90);
+            --bg-subtle: #E2DDD0;
+            --text-main: #2B2927;         /* Tinta Sumi */
+            --text-muted: #6E6A63;
+            --accent-primary: #7A6552;    /* Bambú tostado */
+            --accent-secondary: #5C7367;  /* Té Matcha suave */
+            --accent-soft: rgba(122, 101, 82, 0.14);
+            --border-warm: rgba(43, 41, 39, 0.12);
+            --shadow-warm: 0 12px 32px -8px rgba(43, 41, 39, 0.07);
+            --particle-primary: rgba(122, 101, 82, 0.32);
+            --particle-secondary: rgba(92, 115, 103, 0.32);
+        }
+
+        /* ==========================================================================
+           2. TIPOGRAFÍA Y SUPERFICIES ORGÁNICAS
+           ========================================================================== */
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.6s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .font-serif-warm {
+            font-family: 'Fraunces', serif;
+        }
+
+        .font-mono-calm {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .warm-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-warm);
+            box-shadow: var(--shadow-warm);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .warm-subcard {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-warm);
+            transition: all 0.25s ease;
+        }
+
+        .warm-subcard:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .text-muted-warm {
+            color: var(--text-muted);
+        }
+
+        .btn-warm-primary {
+            background-color: var(--accent-primary);
+            color: #FAF8F5;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px -4px var(--accent-soft);
+        }
+
+        .btn-warm-primary:hover {
+            filter: brightness(1.07);
+            transform: translateY(-1px);
+        }
+
+        .btn-warm-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-warm-secondary {
+            background-color: var(--bg-subtle);
+            color: var(--text-main);
+            border: 1px solid var(--border-warm);
+            transition: all 0.25s ease;
+        }
+
+        .btn-warm-secondary:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .badge-warm {
+            background-color: var(--accent-soft);
+            color: var(--accent-primary);
+            border: 1px solid var(--border-warm);
+        }
+
+        /* Anillo del Temporizador Suave */
+        .timer-ring-circle {
+            transition: stroke-dashoffset 0.5s ease-out, stroke 0.5s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* ==========================================================================
+           3. MODO INMERSIÓN (ATENUACIÓN DE ESTÍMULOS SECUNDARIOS AL ESTUDIAR)
+           ========================================================================== */
+        body.deep-focus-active .focus-dimmable {
+            opacity: 0.22;
+            filter: grayscale(30%);
+            transition: opacity 0.6s ease, filter 0.6s ease;
+        }
+
+        body.deep-focus-active .focus-dimmable:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        /* Animación suave de respiración 4-4-4 */
+        .breath-circle-guide {
+            transition: transform 4s ease-in-out, background-color 1.5s ease;
+        }
+
+        /* Animación sutil para las hojas del Bonsái */
+        @keyframes gentle-sway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(1.4deg); }
+        }
+        .bonsai-canopy {
+            transform-origin: 150px 180px;
+            animation: gentle-sway 6s ease-in-out infinite;
+        }
+
+        /* Scrollbar discreta y cálida */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-warm);
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-[#5A7A60] selection:text-white">
+
+    <!-- CANVAS DE AMBIENTE SUTIL (Hojas lentas, luz Komorebi o lluvia suave; desactivable) -->
+    <canvas id="ambientCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- CONTENEDOR DE NOTIFICACIONES DISCRETAS Y CÁLIDAS -->
+    <div id="toastArea" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ========================================================================
+         CAJÓN OCULTO DE DEMOSTRACIÓN PARA EL PROFESOR (SOLO SE VE AL PULSAR EL BOTÓN)
+         Permite demostrar toda la práctica en segundos sin ensuciar la interfaz de estudio
+         ======================================================================== -->
+    <div id="profDemoDrawer" class="hidden sticky top-0 z-40 border-b border-amber-500/30 bg-[#2C2623] text-[#F4EFE6] px-4 py-2.5 text-xs shadow-md">
+        <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i>Panel Evaluador
+                </span>
+                <span class="text-stone-300 hidden sm:inline">Prueba rápida de niveles, bonsái y pausas de 5m/15m:</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5">
+                <button onclick="app.startDemoPomodoro()" class="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 border border-emerald-500/40 font-medium cursor-pointer transition">
+                    ⚡ Pomodoro 3s
+                </button>
+                <button onclick="app.jumpToBreakExperience('shortBreak')" class="px-2.5 py-1 rounded-lg bg-sky-600/30 hover:bg-sky-600/50 text-sky-200 border border-sky-500/40 font-medium cursor-pointer transition">
+                    🍵 Simular Pausa 5m
+                </button>
+                <button onclick="app.jumpToBreakExperience('longBreak')" class="px-2.5 py-1 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 text-amber-200 border border-amber-500/40 font-medium cursor-pointer transition">
+                    🍲 Simular Pausa 15m
+                </button>
+                <button onclick="app.grantDemoProgress()" class="px-2.5 py-1 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-500/40 font-medium cursor-pointer transition">
+                    🌱 +150 XP / Crecer Bonsái
+                </button>
+                <button onclick="app.unlockAllSanctuary()" class="px-2.5 py-1 rounded-lg bg-stone-700 hover:bg-stone-600 text-stone-200 border border-stone-500 font-medium cursor-pointer transition">
+                    🔓 Desbloquear Todo
+                </button>
+                <button onclick="app.openResetModal()" class="px-2 py-1 rounded-lg bg-rose-700/40 hover:bg-rose-700/60 text-rose-200 border border-rose-500/40 cursor-pointer" title="Reiniciar datos guardados">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================
+         CABECERA MINIMALISTA Y NAVEGACIÓN POR REVELACIÓN PROGRESIVA (3 PESTAÑAS)
+         ======================================================================== -->
+    <header class="relative z-10 max-w-5xl w-full mx-auto px-4 sm:px-6 pt-5 pb-2">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+
+            <!-- Marca + Nivel del Bonsái de Estudio -->
+            <div class="flex items-center gap-3.5 focus-dimmable">
+                <button onclick="app.switchMainView('sanctuary')" class="w-11 h-11 rounded-2xl warm-card flex items-center justify-center text-xl cursor-pointer hover:scale-105 transition" title="Ver evolución de tu Bonsái en el Santuario">
+                    <span id="headerTreeEmoji">🌱</span>
+                </button>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-serif-warm text-lg sm:text-xl font-semibold tracking-tight">
+                            Komorebi Focus
+                        </h1>
+                        <span id="headerLevelBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full badge-warm">
+                            Nvl 1 · Semilla
+                        </span>
+                    </div>
+                    <p class="text-xs text-muted-warm">
+                        Estudio consciente · <span id="headerMinutesText">0 min enfocados</span> · <span id="headerDewDrops" class="font-semibold">💧 40</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Píldora Central de Navegación (Separa el Estudio del Descanso y Recompensas) -->
+            <nav class="warm-card p-1.5 rounded-2xl flex items-center gap-1">
+                <button onclick="app.switchMainView('study')" id="navBtn-study" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer btn-warm-primary">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Estudio</span>
+                </button>
+                <button onclick="app.switchMainView('break')" id="navBtn-break" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer text-muted-warm hover:opacity-90 relative">
+                    <i class="fa-solid fa-mug-hot"></i>
+                    <span>Mi Pausa <span class="hidden sm:inline text-[11px] opacity-75">(5m / 15m)</span></span>
+                    <span id="breakSuggestionDot" class="hidden w-2 h-2 rounded-full bg-amber-500 absolute top-1.5 right-1.5 animate-ping"></span>
+                </button>
+                <button onclick="app.switchMainView('sanctuary')" id="navBtn-sanctuary" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer text-muted-warm hover:opacity-90">
+                    <i class="fa-solid fa-seedling"></i>
+                    <span>Santuario</span>
+                </button>
+            </nav>
+
+            <!-- Controles Rápidos: Modo Noche Cálido, Modo Inmersión y Demo Profesor -->
+            <div class="flex items-center gap-2 focus-dimmable">
+                <button onclick="app.toggleDeepFocusMode()" id="deepFocusBtn" class="warm-card px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 cursor-pointer hover:opacity-90" title="Modo Inmersión: Atenúa el resto de la pantalla para no distraerte">
+                    <i class="fa-regular fa-eye-slash"></i>
+                    <span class="hidden sm:inline">Inmersión</span>
+                </button>
+                <button onclick="app.toggleQuickDayNight()" id="dayNightBtn" class="warm-card w-9 h-9 rounded-xl flex items-center justify-center text-sm cursor-pointer hover:opacity-90" title="Alternar entre Papel Lino (Día) y Cafetería Nocturna (Noche Cálida)">
+                    <i id="dayNightIcon" class="fa-solid fa-moon"></i>
+                </button>
+                <button onclick="app.toggleProfDrawer()" class="warm-card px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer hover:opacity-90" title="Abrir herramientas de prueba rápida para el profesor">
+                    <i class="fa-solid fa-graduation-cap text-amber-600"></i>
+                    <span class="hidden md:inline">Demo</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ========================================================================
+         CONTENIDO PRINCIPAL (CON REVELACIÓN PROGRESIVA)
+         ======================================================================== -->
+    <main class="relative z-10 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 flex-1">
+
+        <!-- ====================================================================
+             VISTA 1: 🎯 ESTUDIO (ENFOQUE LIMPIO Y SIN SOBRECARGA DE ESTÍMULOS)
+             ==================================================================== -->
+        <section id="view-study" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- Tarjeta Principal del Reloj Pomodoro (7 Columnas) -->
+            <div class="lg:col-span-7 warm-card rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center">
+
+                <!-- Selector Suave de Sesión -->
+                <div class="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl warm-subcard mb-6 focus-dimmable">
+                    <button onclick="app.setTimerMode('pomodoro')" id="modeTab-pomodoro" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer btn-warm-primary">
+                        Enfoque (25m)
+                    </button>
+                    <button onclick="app.setTimerMode('shortBreak')" id="modeTab-shortBreak" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer text-muted-warm">
+                        Pausa Corta (5m)
+                    </button>
+                    <button onclick="app.setTimerMode('longBreak')" id="modeTab-longBreak" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer text-muted-warm">
+                        Pausa Larga (15m)
+                    </button>
+                </div>
+
+                <!-- Anillo Orgánico del Temporizador -->
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center my-1">
+                    <svg class="w-full h-full" viewBox="0 0 260 260">
+                        <circle
+                            cx="130" cy="130" r="112"
+                            fill="transparent"
+                            stroke="var(--border-warm)"
+                            stroke-width="8"
+                        />
+                        <circle
+                            id="timerRingProgress"
+                            class="timer-ring-circle"
+                            cx="130" cy="130" r="112"
+                            fill="transparent"
+                            stroke="var(--accent-primary)"
+                            stroke-width="8"
+                            stroke-linecap="round"
+                            stroke-dasharray="703.7"
+                            stroke-dashoffset="0"
+                        />
+                    </svg>
+
+                    <!-- Tiempo y Estado -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center px-6">
+                        <span id="timerStateSubtitle" class="text-[11px] uppercase tracking-widest font-semibold text-muted-warm mb-1">
+                            SESIÓN DE ENFOQUE
+                        </span>
+                        <div id="mainTimerDigits" class="font-mono-calm text-5xl sm:text-6xl font-semibold tracking-tight select-none">
+                            25:00
+                        </div>
+                        <div id="cycleDotsDisplay" class="mt-3 flex items-center gap-2 text-xs text-muted-warm" title="4 sesiones de enfoque desbloquean una pausa larga de 15 minutos">
+                            <span>Ciclo:</span>
+                            <span id="cycleDotsIcons" class="tracking-widest font-bold" style="color: var(--accent-primary)">● ○ ○ ○</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aviso sereno cuando estás en Pausa Corta o Larga -->
+                <div id="calmBreakBanner" class="hidden w-full max-w-md my-3 p-3.5 rounded-2xl warm-subcard items-center justify-between gap-3 text-left">
+                    <div class="flex items-center gap-3">
+                        <span id="calmBreakEmoji" class="text-2xl">🍵</span>
+                        <div>
+                            <div id="calmBreakTitle" class="text-xs sm:text-sm font-semibold">Tiempo de Pausa Corta (5 min)</div>
+                            <div id="calmBreakDesc" class="text-xs text-muted-warm">Desconecta la vista o haz estiramientos suaves.</div>
+                        </div>
+                    </div>
+                    <button onclick="app.switchMainView('break')" class="px-3 py-1.5 rounded-xl btn-warm-primary text-xs font-semibold whitespace-nowrap cursor-pointer">
+                        Abrir Guía →
+                    </button>
+                </div>
+
+                <!-- Tarea en Curso Destacada -->
+                <div class="w-full max-w-md mt-3 mb-6 px-4 py-2.5 rounded-2xl warm-subcard flex items-center justify-between gap-2 text-xs sm:text-sm">
+                    <div class="flex items-center gap-2 truncate">
+                        <i class="fa-solid fa-feather-pointed" style="color: var(--accent-primary)"></i>
+                        <span class="text-muted-warm">Enfocado en:</span>
+                        <span id="currentTaskLabel" class="font-semibold truncate">Estudiar Desarrollo de Interfaces</span>
+                    </div>
+                    <button onclick="app.openCustomTimeModal()" class="text-muted-warm hover:opacity-100 opacity-75 cursor-pointer" title="Personalizar minutos">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                </div>
+
+                <!-- Controles del Reloj -->
+                <div class="flex items-center justify-center gap-3">
+                    <button id="primaryTimerBtn" onclick="app.toggleTimer()" class="btn-warm-primary px-8 py-3.5 rounded-2xl font-semibold text-sm sm:text-base flex items-center gap-2.5 cursor-pointer">
+                        <i id="primaryTimerIcon" class="fa-solid fa-play text-xs"></i>
+                        <span id="primaryTimerText">Comenzar Enfoque</span>
+                    </button>
+
+                    <button onclick="app.resetTimer()" class="btn-warm-secondary w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer" title="Reiniciar reloj">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+
+                <!-- Mezclador de Sonido Ambiental Relajante (Web Audio API) -->
+                <div class="w-full mt-7 pt-5 border-t border-[var(--border-warm)] focus-dimmable">
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span class="text-muted-warm font-medium flex items-center gap-1.5">
+                            <i class="fa-solid fa-volume-low"></i> Sonido de Ambiente para Estudiar:
+                        </span>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <button onclick="app.setAmbientSound('off')" id="soundBtn-off" class="px-2.5 py-1 rounded-lg font-medium cursor-pointer btn-warm-primary">
+                                Silencio
+                            </button>
+                            <button onclick="app.setAmbientSound('rain')" id="soundBtn-rain" class="px-2.5 py-1 rounded-lg font-medium cursor-pointer btn-warm-secondary">
+                                🌧️ Lluvia Suave
+                            </button>
+                            <button onclick="app.setAmbientSound('cafe')" id="soundBtn-cafe" class="px-2.5 py-1 rounded-lg font-medium cursor-pointer btn-warm-secondary">
+                                ☕ Murmullo Café
+                            </button>
+                            <button onclick="app.setAmbientSound('fire')" id="soundBtn-fire" class="px-2.5 py-1 rounded-lg font-medium cursor-pointer btn-warm-secondary">
+                                🔥 Chimenea
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Columna Derecha en Estudio: Cuaderno de Tareas Sencillo + Mini Progreso (5 Columnas) -->
+            <div class="lg:col-span-5 flex flex-col gap-5 focus-dimmable">
+
+                <!-- Cuaderno de Tareas de Estudio -->
+                <div class="warm-card rounded-3xl p-5 sm:p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h2 class="font-serif-warm text-base sm:text-lg font-semibold">Cuaderno de Estudio</h2>
+                            <p class="text-xs text-muted-warm">Elige una única tarea para mantener la mente clara</p>
+                        </div>
+                        <span id="tasksCountBadge" class="text-xs font-semibold px-2.5 py-1 rounded-full badge-warm">0/3</span>
+                    </div>
+
+                    <!-- Añadir tarea -->
+                    <form onsubmit="app.addTask(event)" class="flex gap-2 mb-4">
+                        <input
+                            type="text"
+                            id="newTaskInput"
+                            placeholder="Añadir objetivo de estudio..."
+                            required
+                            maxlength="75"
+                            class="flex-1 rounded-xl px-3.5 py-2 text-xs sm:text-sm warm-subcard focus:outline-none"
+                        />
+                        <button type="submit" class="btn-warm-primary px-3.5 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+                            Añadir
+                        </button>
+                    </form>
+
+                    <!-- Lista limpia de tareas -->
+                    <div id="studyTasksList" class="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- Tarjeta de Progreso Sereno (Compañero Botánico) -->
+                <div class="warm-card rounded-3xl p-5 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl warm-subcard flex items-center justify-center text-2xl shrink-0">
+                            <span id="miniCardTreeIcon">🌱</span>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span id="miniCardRankName" class="font-serif-warm font-semibold text-sm">Semilla Silenciosa</span>
+                                <span class="text-[11px] text-muted-warm font-mono-calm" id="miniCardXpText">0 / 150 XP</span>
+                            </div>
+                            <p class="text-xs text-muted-warm mt-0.5">
+                                Cada minuto de estudio nutre tu árbol en el Santuario.
+                            </p>
+                            <div class="w-full h-2 rounded-full warm-subcard overflow-hidden mt-2">
+                                <div id="miniXpBar" class="h-full rounded-full transition-all duration-500" style="width: 10%; background-color: var(--accent-primary)"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="app.switchMainView('sanctuary')" class="btn-warm-secondary px-3 py-2 rounded-xl text-xs font-semibold shrink-0 cursor-pointer">
+                        Ver 🌿
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ====================================================================
+             VISTA 2: 🍵 MI PAUSA (GUÍA DIFERENCIADA 5 MIN VS 15 MIN + JUEGOS ZEN)
+             Oculta durante el estudio para no generar distracciones visuales
+             ==================================================================== -->
+        <section id="view-break" class="hidden flex-col gap-6">
+
+            <!-- Cabecera del Centro de Pausa con Reloj en Vivo y Sugerencia Inteligente -->
+            <div class="warm-card rounded-3xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full badge-warm">
+                        Descanso Consciente · Sin Redes Sociales
+                    </span>
+                    <h2 class="font-serif-warm text-xl sm:text-2xl font-semibold mt-1.5">
+                        ¿Cuánto tiempo tienes de descanso ahora mismo?
+                    </h2>
+                    <p class="text-xs sm:text-sm text-muted-warm mt-0.5">
+                        Hemos separado las actividades según si estás en una <strong>Pausa Corta (5 min)</strong> o una <strong>Pausa Larga (15 min)</strong> para que te dé tiempo sin estrés.
+                    </p>
+                </div>
+
+                <!-- Reloj de Pausa visible + Botón Sugerencia Suave -->
+                <div class="flex items-center gap-3 self-start md:self-center shrink-0">
+                    <div class="warm-subcard px-4 py-2 rounded-2xl text-center">
+                        <div class="text-[10px] uppercase tracking-wider text-muted-warm font-semibold">Reloj Activo</div>
+                        <div id="breakViewTimerDisplay" class="font-mono-calm text-lg font-bold">25:00</div>
+                    </div>
+                    <button onclick="app.suggestCalmBreakActivity()" class="btn-warm-primary px-4 py-3 rounded-2xl text-xs font-semibold flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Sugerir Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pestañas de Tiempo de Descanso (5 Minutos vs 15 Minutos vs Juegos Zen) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <button onclick="app.setBreakSubTab('short5')" id="breakSubBtn-short5" class="p-4 rounded-2xl text-left transition cursor-pointer btn-warm-primary">
+                    <div class="flex items-center justify-between">
+                        <span class="font-serif-warm font-semibold text-base">🍵 Pausa Corta (5 min)</span>
+                        <span class="text-xs opacity-85">Recarga Express</span>
+                    </div>
+                    <p class="text-xs opacity-85 mt-1">No da tiempo a cocinar, ideal para vista, cuello, respiración y agua.</p>
+                </button>
+
+                <button onclick="app.setBreakSubTab('long15')" id="breakSubBtn-long15" class="p-4 rounded-2xl text-left transition cursor-pointer warm-card hover:opacity-95">
+                    <div class="flex items-center justify-between">
+                        <span class="font-serif-warm font-semibold text-base">🍲 Pausa Larga (15 min)</span>
+                        <span class="text-xs text-muted-warm">Cocina & Cuerpo</span>
+                    </div>
+                    <p class="text-xs text-muted-warm mt-1">Tiempo real para preparar algo rico paso a paso o estirar todo el cuerpo.</p>
+                </button>
+
+                <button onclick="app.setBreakSubTab('zengames')" id="breakSubBtn-zengames" class="p-4 rounded-2xl text-left transition cursor-pointer warm-card hover:opacity-95">
+                    <div class="flex items-center justify-between">
+                        <span class="font-serif-warm font-semibold text-base">🐟 Juegos Zen (Pausa Mental)</span>
+                        <span class="text-xs text-muted-warm">Baja Estimulación</span>
+                    </div>
+                    <p class="text-xs text-muted-warm mt-1">Juegos calmados sin estrés ni ruidos estridentes para despejar la mente.</p>
+                </button>
+            </div>
+
+            <!-- SUB-CONTENIDO A: PLANES PARA 5 MINUTOS -->
+            <div id="breakSubContent-short5" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Plan 5m 1: Respiración Orgánica 4-4-4 -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">⏱️ 2 min</span>
+                            <span class="text-muted-warm">+30 XP · +15 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">🌬️ Respiración Armónica 4-4-4</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Sigue el círculo cálido que se expande y contrae suavemente para oxigenar el cerebro y bajar la fatiga visual.
+                        </p>
+                    </div>
+                    <button onclick="app.openBreakModal('breath5')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Iniciar Respiración Guiada
+                    </button>
+                </div>
+
+                <!-- Plan 5m 2: Alivio Cervical y Regla Visual 20-20-20 -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">⏱️ 3 min</span>
+                            <span class="text-muted-warm">+35 XP · +15 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">🧘 Alivio Cervical y Ocular</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            4 micro-ejercicios suaves en la silla: libera trapecios, muñecas de teclear y descansa la córnea mirando lejos.
+                        </p>
+                    </div>
+                    <button onclick="app.openBreakModal('stretch5')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Abrir Guía de 3 Minutos
+                    </button>
+                </div>
+
+                <!-- Plan 5m 3: Ritual de Hidratación o Infusión -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">⏱️ 3 min</span>
+                            <span class="text-muted-warm">+30 XP · +15 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">🍵 Ritual de Agua & Snack Natural</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Levántate de la silla, bebe un vaso de agua fresca y toma un puñado de frutos secos o fruta sin encender fuegos.
+                        </p>
+                    </div>
+                    <button onclick="app.openBreakModal('tea5')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Ver Checklist de 3 Minutos
+                    </button>
+                </div>
+            </div>
+
+            <!-- SUB-CONTENIDO B: PLANES PARA 15 MINUTOS (COCINA CALMA Y MOVILIDAD) -->
+            <div id="breakSubContent-long15" class="hidden grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Plan 15m 1: Cocina Calma en 15 Minutos -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">🍳 8 a 12 min</span>
+                            <span class="text-muted-warm">+75 XP · +35 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">🥑 Cocina Calma en 15 Minutos</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            3 recetas reconfortantes paso a paso con temporizador suave (Tostada Templada con Huevo, Porridge de Manzana o Wrap de Hummus).
+                        </p>
+                    </div>
+                    <button onclick="app.openBreakModal('chef15')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Abrir Recetario Guiado (15m)
+                    </button>
+                </div>
+
+                <!-- Plan 15m 2: Movilidad Completa Anti-Silla -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">🧘‍♂️ 8 min</span>
+                            <span class="text-muted-warm">+70 XP · +30 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">🌿 Flujo de Movilidad Corporal</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Secuencia suave de pie (sentadillas lentas, estiramiento de espalda, apertura de cadera y paseo tranquilo) para reactivar la circulación.
+                        </p>
+                    </div>
+                    <button onclick="app.openBreakModal('mobility15')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Iniciar Secuencia (8 min)
+                    </button>
+                </div>
+
+                <!-- Plan 15m 3: Ordenar Espacio & Aire Fresco -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">🍃 10 min</span>
+                            <span class="text-muted-warm">+65 XP · +30 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">🪟 Ventilar & Despejar Mesa</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Renueva el oxígeno de tu habitación, retira tazas usadas y escucha lluvia suave con los ojos cerrados.
+                        </p>
+                    </div>
+                    <button onclick="app.openBreakModal('reset15')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Hacer Reset de Estudio
+                    </button>
+                </div>
+            </div>
+
+            <!-- SUB-CONTENIDO C: JUEGOS ZEN DE BAJA ESTIMULACIÓN -->
+            <div id="breakSubContent-zengames" class="hidden grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Juego Zen 1: Estanque Koi -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">🐟 Flujo Relajante</span>
+                            <span class="text-muted-warm">Gana 💧 Rocío</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">Estanque Koi Sereno</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Guía suavemente a un pez Koi por aguas tranquilas recogiendo pétalos de loto y creando ondas suaves. Sin cronómetros agresivos ni pantallas de derrota.
+                        </p>
+                    </div>
+                    <button onclick="app.openZenGameModal('koi')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Entrar al Estanque Koi
+                    </button>
+                </div>
+
+                <!-- Juego Zen 2: Herbario de Memoria Botánica -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">🌿 Memoria Calma</span>
+                            <span class="text-muted-warm">+45 XP · +25 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">Herbario de Memoria</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Empareja láminas botánicas de helechos, ginkgo, lavanda y bonsáis sobre tarjetas de papel cálido a tu propio ritmo.
+                        </p>
+                    </div>
+                    <button onclick="app.openZenGameModal('herbarium')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Abrir Herbario
+                    </button>
+                </div>
+
+                <!-- Juego Zen 3: Jardín Zen de Lógica 4x4 -->
+                <div class="warm-card rounded-3xl p-5 flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-2">
+                            <span class="badge-warm px-2.5 py-0.5 rounded-full">🪨 Mini-Sudoku 4x4</span>
+                            <span class="text-muted-warm">+50 XP · +25 💧</span>
+                        </div>
+                        <h3 class="font-serif-warm text-lg font-semibold">Jardín Zen de Lógica</h3>
+                        <p class="text-xs text-muted-warm mt-1.5 leading-relaxed">
+                            Completa la cuadrícula 4x4 con los 4 elementos naturales (🌱, 🌸, 🍂, 💧) sin repetir en fila ni columna. Ideal en descansos de 5 min.
+                        </p>
+                    </div>
+                    <button onclick="app.openZenGameModal('zensudoku')" class="btn-warm-primary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                        Resolver Puzle Zen
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ====================================================================
+             VISTA 3: 🌿 MI SANTUARIO (BONSÁI EVOLUTIVO, NIVELES Y RECOMPENSAS CÁLIDAS)
+             ==================================================================== -->
+        <section id="view-sanctuary" class="hidden grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- Columna Izquierda: El Bonsái Evolutivo del Estudiante (5 Columnas) -->
+            <div class="lg:col-span-5 warm-card rounded-3xl p-6 flex flex-col items-center text-center">
+                <span class="text-[11px] font-semibold uppercase tracking-wider px-3 py-0.5 rounded-full badge-warm">
+                    Tu Compañero de Estudio
+                </span>
+                <h2 id="sanctuaryTreeTitle" class="font-serif-warm text-2xl font-semibold mt-2">
+                    Semilla Silenciosa (Nivel 1)
+                </h2>
+                <p id="sanctuaryTreeSubtitle" class="text-xs text-muted-warm mt-1 max-w-xs">
+                    Completa sesiones de estudio y pausas saludables para ver crecer las ramas, hojas y flores de tu Bonsái.
+                </p>
+
+                <!-- Ilustración SVG Dinámica del Bonsái que evoluciona del Nivel 1 al Nivel 5 -->
+                <div class="w-64 h-64 my-4 rounded-3xl warm-subcard flex items-center justify-center relative overflow-hidden p-4">
+                    <svg id="bonsaiSvgContainer" viewBox="0 0 300 260" class="w-full h-full">
+                        <!-- Suelo y Maceta de Cerámica Cálida (Siempre visible) -->
+                        <ellipse cx="150" cy="235" rx="85" ry="10" fill="rgba(44,38,35,0.10)" />
+                        <path d="M95 195 L205 195 L190 232 L110 232 Z" fill="#8C6249" />
+                        <rect x="88" y="187" width="124" height="10" rx="4" fill="#A47559" />
+                        <ellipse cx="150" cy="187" rx="56" ry="6" fill="#5A4638" />
+
+                        <!-- Grupo dinámico donde se dibuja la etapa actual del árbol -->
+                        <g id="bonsaiDynamicStage"></g>
+                    </svg>
+                </div>
+
+                <!-- Barra de Experiencia y Estadísticas Serenas -->
+                <div class="w-full">
+                    <div class="flex justify-between text-xs font-semibold mb-1.5">
+                        <span>Progreso al siguiente nivel</span>
+                        <span id="sanctuaryXpNumbers" class="font-mono-calm">0 / 150 XP</span>
+                    </div>
+                    <div class="w-full h-2.5 rounded-full warm-subcard overflow-hidden">
+                        <div id="sanctuaryXpBar" class="h-full rounded-full transition-all duration-500" style="width: 10%; background-color: var(--accent-primary)"></div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2.5 mt-5 text-center">
+                        <div class="warm-subcard p-3 rounded-2xl">
+                            <div class="text-[11px] text-muted-warm">Gotas Rocío</div>
+                            <div id="statDewDrops" class="font-mono-calm font-bold text-base mt-0.5">💧 40</div>
+                        </div>
+                        <div class="warm-subcard p-3 rounded-2xl">
+                            <div class="text-[11px] text-muted-warm">Enfoque Total</div>
+                            <div id="statFocusMins" class="font-mono-calm font-bold text-base mt-0.5">0 min</div>
+                        </div>
+                        <div class="warm-subcard p-3 rounded-2xl">
+                            <div class="text-[11px] text-muted-warm">Pomodoros</div>
+                            <div id="statPomodorosCount" class="font-mono-calm font-bold text-base mt-0.5">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Recompensas Visuales Relajantes (Paletas y Climas Suaves) (7 Columnas) -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+
+                <!-- 1. Paletas de Color Ergonómicas -->
+                <div class="warm-card rounded-3xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="font-serif-warm text-lg font-semibold">Paletas de Color Cálidas</h3>
+                            <p class="text-xs text-muted-warm">Diseñadas para estudiar durante horas sin fatiga visual</p>
+                        </div>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full badge-warm">
+                            Usa tus 💧 Gotas de Rocío
+                        </span>
+                    </div>
+
+                    <div id="warmThemesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- 2. Atmósferas Sutiles de Fondo (Canvas de Baja Estimulación) -->
+                <div class="warm-card rounded-3xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="font-serif-warm text-lg font-semibold">Atmósferas Visuales del Santuario</h3>
+                            <p class="text-xs text-muted-warm">Movimientos lentos y orgánicos en segundo plano (o lienzo limpio)</p>
+                        </div>
+                    </div>
+
+                    <div id="ambientEffectsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA DISCRETO -->
+    <footer class="relative z-10 max-w-5xl w-full mx-auto px-4 sm:px-6 py-4 text-center text-xs text-muted-warm focus-dimmable">
+        Komorebi Focus · Diseño de Interfaces Centrado en la Calma y la Atención Sostenida
+    </footer>
+
+    <!-- ========================================================================
+         MODAL DE ACTIVIDADES GUIADAS DE DESCANSO (5M Y RECETARIO 15M)
+         ======================================================================== -->
+    <div id="breakActivityModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="warm-card max-w-xl w-full rounded-3xl p-6 sm:p-7 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[var(--border-warm)]">
+                <div class="flex items-center gap-2.5">
+                    <span id="modalBreakTag" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full badge-warm">PAUSA GUIADA</span>
+                    <span class="text-xs text-muted-warm">
+                        Reloj de pausa: <strong id="modalBreakLiveClock" class="font-mono-calm">05:00</strong>
+                    </span>
+                </div>
+                <button onclick="app.closeBreakModal()" class="w-8 h-8 rounded-xl warm-subcard flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="breakActivityModalBody"></div>
+        </div>
+    </div>
+
+    <!-- ========================================================================
+         MODAL DE JUEGOS ZEN DE BAJA ESTIMULACIÓN (KOI POND, HERBARIO, SUDOKU 4X4)
+         ======================================================================== -->
+    <div id="zenGameModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/55 backdrop-blur-sm p-4">
+        <div class="warm-card max-w-2xl w-full rounded-3xl p-6 max-h-[92vh] overflow-y-auto">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b border-[var(--border-warm)]">
+                <div class="flex items-center gap-3">
+                    <h3 id="zenGameTitle" class="font-serif-warm font-semibold text-lg">🐟 Estanque Koi Sereno</h3>
+                    <span class="text-xs px-2.5 py-1 rounded-xl warm-subcard font-mono-calm">
+                        ⏱️ Reloj: <strong id="zenGameLiveClock">05:00</strong>
+                    </span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="app.openZenGameModal('koi')" class="px-2.5 py-1 rounded-lg warm-subcard text-xs font-medium cursor-pointer">🐟 Koi</button>
+                    <button onclick="app.openZenGameModal('herbarium')" class="px-2.5 py-1 rounded-lg warm-subcard text-xs font-medium cursor-pointer">🌿 Herbario</button>
+                    <button onclick="app.openZenGameModal('zensudoku')" class="px-2.5 py-1 rounded-lg warm-subcard text-xs font-medium cursor-pointer">🪨 Lógica 4x4</button>
+                    <button onclick="app.closeZenGameModal()" class="w-8 h-8 rounded-xl warm-subcard flex items-center justify-center cursor-pointer ml-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="zenGameStage" class="flex flex-col items-center"></div>
+        </div>
+    </div>
+
+    <!-- ========================================================================
+         MODAL PERSONALIZAR TIEMPOS DEL POMODORO
+         ======================================================================== -->
+    <div id="customTimeModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="warm-card max-w-sm w-full rounded-3xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-serif-warm font-semibold text-lg">Ajustar Tiempos (Minutos)</h3>
+                <button onclick="app.closeCustomTimeModal()" class="w-8 h-8 rounded-xl warm-subcard flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs sm:text-sm">
+                <div>
+                    <label class="block text-muted-warm mb-1">Sesión de Enfoque (min)</label>
+                    <input type="number" id="inputFocusMins" min="1" max="120" value="25" class="w-full rounded-xl px-3.5 py-2 warm-subcard" />
+                </div>
+                <div>
+                    <label class="block text-muted-warm mb-1">Pausa Corta (min)</label>
+                    <input type="number" id="inputShortMins" min="1" max="30" value="5" class="w-full rounded-xl px-3.5 py-2 warm-subcard" />
+                </div>
+                <div>
+                    <label class="block text-muted-warm mb-1">Pausa Larga (min)</label>
+                    <input type="number" id="inputLongMins" min="1" max="60" value="15" class="w-full rounded-xl px-3.5 py-2 warm-subcard" />
+                </div>
+            </div>
+            <div class="flex gap-2 mt-6">
+                <button onclick="app.closeCustomTimeModal()" class="flex-1 py-2.5 rounded-xl btn-warm-secondary text-xs font-semibold cursor-pointer">Cancelar</button>
+                <button onclick="app.saveCustomTimes()" class="flex-1 py-2.5 rounded-xl btn-warm-primary text-xs font-semibold cursor-pointer">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================
+         MODAL CONFIRMAR REINICIO DE DATOS
+         ======================================================================== -->
+    <div id="resetModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="warm-card max-w-sm w-full rounded-3xl p-6 text-center">
+            <div class="w-12 h-12 rounded-2xl warm-subcard flex items-center justify-center mx-auto mb-3 text-xl">
+                🌱
+            </div>
+            <h3 class="font-serif-warm font-semibold text-lg">¿Reiniciar tu Santuario?</h3>
+            <p class="text-xs text-muted-warm mt-1.5">
+                Tu Bonsái volverá al Nivel 1 (Semilla) y se restaurarán las tareas de ejemplo.
+            </p>
+            <div class="flex gap-2 mt-6">
+                <button onclick="app.closeResetModal()" class="flex-1 py-2.5 rounded-xl btn-warm-secondary text-xs font-semibold cursor-pointer">Cancelar</button>
+                <button onclick="app.confirmReset()" class="flex-1 py-2.5 rounded-xl bg-rose-700 text-white text-xs font-semibold cursor-pointer">Reiniciar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================
+         ARQUITECTURA JAVASCRIPT: SONIDO ACÚSTICO WEB AUDIO, BONSÁI Y JUEGOS ZEN
+         ======================================================================== -->
+    <script>
+        /**
+         * ============================================================================
+         * 1. MOTOR DE AUDIO ORGÁNICO Y AMBIENTAL (CUENCOS CÁLIDOS, LLUVIA, CAFÉ, FUEGO)
+         * ============================================================================
+         * Sin ondas cuadradas estridentes. Utiliza ondas sinusoidales armónicas suaves.
+         */
+        class CalmAudioEngine {
+            constructor() {
+                this.ctx = null;
+                this.currentAmbient = 'off';
+                this.ambientSource = null;
+                this.ambientGain = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            // Sonido suave de madera/marimba al hacer clic
+            playSoftTap() {
+                try {
+                    this.init();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(380, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(280, this.ctx.currentTime + 0.045);
+
+                    gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.045);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch (e) {}
+            }
+
+            // Cuenco tibetano / campana cálida al terminar un Pomodoro o actividad
+            playSingingBowlChime() {
+                try {
+                    this.init();
+                    const notes = [432, 648, 864]; // Armónicos relajantes en 432Hz
+                    notes.forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        const now = this.ctx.currentTime + idx * 0.12;
+
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now);
+
+                        gain.gain.setValueAtTime(0.09 / (idx + 1), now);
+                        gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.8);
+
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 1.85);
+                    });
+                } catch (e) {}
+            }
+
+            setAmbientMode(mode) {
+                this.init();
+                if (this.ambientSource) {
+                    try {
+                        this.ambientSource.stop();
+                        this.ambientSource.disconnect();
+                    } catch (e) {}
+                    this.ambientSource = null;
+                }
+                this.currentAmbient = mode;
+                if (mode === 'off') return;
+
+                const bufferSize = this.ctx.sampleRate * 4;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    data[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = data[i];
+                    // Si es chimenea, añadir pequeños chasquidos cálidos ocasionales
+                    if (mode === 'fire' && Math.random() < 0.0012) {
+                        data[i] += (Math.random() * 0.45);
+                    }
+                    data[i] *= 0.16;
+                }
+
+                this.ambientSource = this.ctx.createBufferSource();
+                this.ambientSource.buffer = buffer;
+                this.ambientSource.loop = true;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = mode === 'rain' ? 680 : mode === 'cafe' ? 360 : 260;
+
+                this.ambientGain = this.ctx.createGain();
+                this.ambientGain.gain.value = 0.32;
+
+                this.ambientSource.connect(filter);
+                filter.connect(this.ambientGain);
+                this.ambientGain.connect(this.ctx.destination);
+                this.ambientSource.start();
+            }
+        }
+
+        /**
+         * ============================================================================
+         * 2. LIENZO DE ATMÓSFERAS VISUALES DE BAJA ESTIMULACIÓN (KOMOREBI / HOJAS)
+         * ============================================================================
+         */
+        class CalmAmbientCanvas {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.mode = 'komorebi'; // 'none', 'komorebi', 'leaves', 'rain'
+                this.items = [];
+
+                window.addEventListener('resize', () => this.resize());
+                this.resize();
+                this.animate();
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.initItems();
+            }
+
+            setMode(mode) {
+                this.mode = mode;
+                this.initItems();
+            }
+
+            initItems() {
+                this.items = [];
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+
+                if (this.mode === 'komorebi') {
+                    // Motas de luz solar suave flotando muy despacio
+                    for (let i = 0; i < 22; i++) {
+                        this.items.push({
+                            x: Math.random() * w,
+                            y: Math.random() * h,
+                            r: Math.random() * 28 + 10,
+                            vx: (Math.random() - 0.5) * 0.18,
+                            vy: (Math.random() - 0.5) * 0.18,
+                            alpha: Math.random() * 0.08 + 0.03
+                        });
+                    }
+                } else if (this.mode === 'leaves') {
+                    // Hojas botánicas cayendo con balanceo lento
+                    for (let i = 0; i < 18; i++) {
+                        this.items.push({
+                            x: Math.random() * w,
+                            y: Math.random() * h,
+                            size: Math.random() * 6 + 5,
+                            vy: Math.random() * 0.45 + 0.25,
+                            sway: Math.random() * Math.PI * 2,
+                            swaySpeed: Math.random() * 0.015 + 0.008
+                        });
+                    }
+                } else if (this.mode === 'rain') {
+                    // Lluvia serena diagonal
+                    for (let i = 0; i < 38; i++) {
+                        this.items.push({
+                            x: Math.random() * w,
+                            y: Math.random() * h,
+                            len: Math.random() * 14 + 8,
+                            vy: Math.random() * 2.5 + 2
+                        });
+                    }
+                }
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+                const styles = getComputedStyle(document.documentElement);
+                const primaryColor = styles.getPropertyValue('--particle-primary').trim() || 'rgba(90,122,96,0.3)';
+
+                if (this.mode === 'komorebi') {
+                    for (const p of this.items) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        if (p.x < -40) p.x = w + 40;
+                        if (p.x > w + 40) p.x = -40;
+                        if (p.y < -40) p.y = h + 40;
+                        if (p.y > h + 40) p.y = -40;
+
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        this.ctx.fillStyle = primaryColor;
+                        this.ctx.globalAlpha = p.alpha;
+                        this.ctx.fill();
+                    }
+                } else if (this.mode === 'leaves') {
+                    this.ctx.fillStyle = primaryColor;
+                    this.ctx.globalAlpha = 0.28;
+                    for (const lf of this.items) {
+                        lf.sway += lf.swaySpeed;
+                        lf.x += Math.sin(lf.sway) * 0.45;
+                        lf.y += lf.vy;
+                        if (lf.y > h + 20) {
+                            lf.y = -15;
+                            lf.x = Math.random() * w;
+                        }
+                        this.ctx.save();
+                        this.ctx.translate(lf.x, lf.y);
+                        this.ctx.rotate(Math.sin(lf.sway) * 0.5);
+                        this.ctx.beginPath();
+                        this.ctx.ellipse(0, 0, lf.size, lf.size * 0.55, 0, 0, Math.PI * 2);
+                        this.ctx.fill();
+                        this.ctx.restore();
+                    }
+                } else if (this.mode === 'rain') {
+                    this.ctx.strokeStyle = primaryColor;
+                    this.ctx.lineWidth = 1.2;
+                    this.ctx.globalAlpha = 0.25;
+                    for (const r of this.items) {
+                        r.y += r.vy;
+                        if (r.y > h) {
+                            r.y = -20;
+                            r.x = Math.random() * w;
+                        }
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(r.x, r.y);
+                        this.ctx.lineTo(r.x - 2, r.y + r.len);
+                        this.ctx.stroke();
+                    }
+                }
+
+                this.ctx.globalAlpha = 1;
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        /**
+         * ============================================================================
+         * 3. CATÁLOGO DE NIVELES DEL BONSÁI, PALETAS CÁLIDAS Y ACTIVIDADES 5M / 15M
+         * ============================================================================
+         */
+        const BONSAI_STAGES = [
+            { level: 1, name: 'Semilla Silenciosa', badge: 'Nvl 1 · Semilla', emoji: '🌱' },
+            { level: 2, name: 'Brote de Salvia', badge: 'Nvl 2 · Brote', emoji: '🌿' },
+            { level: 3, name: 'Bonsái Joven', badge: 'Nvl 3 · Bonsái', emoji: '🪴' },
+            { level: 4, name: 'Roble Sereno', badge: 'Nvl 4 · Roble', emoji: '🌳' },
+            { level: 5, name: 'Cerezo Komorebi en Flor', badge: 'Nvl 5 · Cerezo', emoji: '🌸' }
+        ];
+
+        const WARM_PALETTES = [
+            {
+                id: 'linen',
+                name: 'Lino & Salvia (Día Cálido)',
+                desc: 'Papel pergamino suave con tinta expreso y verde botánico.',
+                reqLevel: 1,
+                price: 0,
+                swatches: ['#F4EFE6', '#5A7A60', '#C67D5A']
+            },
+            {
+                id: 'nightcafe',
+                name: 'Cafetería Nocturna (Lo-Fi)',
+                desc: 'Tonos madera oscura, café tostado y luz ámbar relajante.',
+                reqLevel: 1,
+                price: 0,
+                swatches: ['#1C1917', '#D48C6A', '#7E9F83']
+            },
+            {
+                id: 'kyoto',
+                name: 'Tarde de Otoño en Kyoto',
+                desc: 'Inspirado en hojas de arce japonés, ocre ginkgo y madera.',
+                reqLevel: 2,
+                price: 35,
+                swatches: ['#F3E9DC', '#B85D3B', '#D49A45']
+            },
+            {
+                id: 'mistforest',
+                name: 'Bosque de Niebla',
+                desc: 'Eucalipto sereno, musgo húmedo y corteza natural.',
+                reqLevel: 3,
+                price: 60,
+                swatches: ['#E7ECE8', '#436850', '#8C7A6B']
+            },
+            {
+                id: 'washi',
+                name: 'Papel Washi & Tinta Sumi',
+                desc: 'Estética minimalista japonesa de papel arroz y bambú.',
+                reqLevel: 4,
+                price: 90,
+                swatches: ['#EFEBE1', '#7A6552', '#5C7367']
+            }
+        ];
+
+        const AMBIENT_EFFECTS_CATALOG = [
+            { id: 'komorebi', name: 'Luz Komorebi', desc: 'Motas de sol filtrándose entre hojas', reqLevel: 1, price: 0 },
+            { id: 'none', name: 'Lienzo Puro (Sin Efecto)', desc: 'Cero movimiento en el fondo', reqLevel: 1, price: 0 },
+            { id: 'leaves', name: 'Brisa de Hojas', desc: 'Hojas cayendo con balanceo suave', reqLevel: 2, price: 30 },
+            { id: 'rain', name: 'Lluvia tras el Cristal', desc: 'Gotas serenas ideales con audio de lluvia', reqLevel: 3, price: 50 }
+        ];
+
+        const CALM_RECIPES_15M = [
+            {
+                id: 'toast_avocado',
+                name: '🥑 Tostada Templada de Aguacate, Huevo y Semillas',
+                time: '9 min',
+                benefit: 'Grasas saludables y proteína sin pesadez estomacal',
+                ingredients: ['1 rebanada de pan integral o masa madre', '1/2 aguacate maduro', '1 o 2 huevos', 'Pizca de sal, aceite de oliva y semillas'],
+                steps: [
+                    { text: 'Tuesta el pan mientras calientas una sartén pequeña a fuego medio-bajo (2 min).', secs: 120 },
+                    { text: 'Revuelve suavemente los huevos en la sartén hasta que queden jugosos (3 min).', secs: 180 },
+                    { text: 'Extiende el aguacate sobre el pan cálido, añade el huevo por encima y come lejos de la pantalla (4 min).', secs: 240 }
+                ]
+            },
+            {
+                id: 'warm_porridge',
+                name: '🥣 Porridge Cálido de Avena, Manzana y Canela',
+                time: '8 min',
+                benefit: 'Energía de liberación lenta ideal para tardes de estudio',
+                ingredients: ['4 cucharadas de copos de avena', '150 ml de leche o bebida vegetal', '1/2 manzana troceada', 'Canela en polvo y nueces'],
+                steps: [
+                    { text: 'Mezcla la avena, la leche y la manzana picada en un bol o cazo pequeño y calienta 3 minutos.', secs: 180 },
+                    { text: 'Remueve hasta que quede cremoso y espolvorea canela y nueces troceadas por encima (1 min).', secs: 60 },
+                    { text: 'Disfrútalo templado mirando por la ventana para relajar la vista (4 min).', secs: 240 }
+                ]
+            },
+            {
+                id: 'hummus_wrap',
+                name: '🫓 Wrap Mediterráneo Express de Hummus y Pavo',
+                time: '7 min',
+                benefit: 'Sin encender fuegos · Fresco, rápido y nutritivo',
+                ingredients: ['1 tortilla integral de trigo', '2 cucharadas de hummus', 'Lonchas de pavo natural o queso fresco', 'Hojas de espinaca o tomate'],
+                steps: [
+                    { text: 'Extiende una capa generosa de hummus sobre la tortilla integral (1 min).', secs: 60 },
+                    { text: 'Coloca el pavo y las hojas verdes, enrolla firme y córtalo por la mitad (2 min).', secs: 120 },
+                    { text: 'Acompáñalo con un vaso grande de agua o infusión suave (4 min).', secs: 240 }
+                ]
+            }
+        ];
+
+        const GUIDED_BREAK_PLANS = {
+            stretch5: {
+                tag: 'PAUSA CORTA · 5 MIN',
+                title: '🧘 Alivio Cervical, Muñecas y Regla 20-20-20',
+                desc: 'Cuatro pasos suaves sin levantarte de la zona de estudio para eliminar la rigidez.',
+                xp: 35,
+                dew: 15,
+                steps: [
+                    { title: '1. Inclinación Cervical Lenta', text: 'Lleva la oreja derecha hacia el hombro derecho respirando hondo 20s, luego cambia al lado izquierdo.', secs: 40 },
+                    { title: '2. Apertura de Hombros y Espalda Alta', text: 'Entrelaza las manos detrás de la espalda, abre el pecho y suelta el aire despacio.', secs: 40 },
+                    { title: '3. Descarga de Muñecas y Dedos', text: 'Estira ambos brazos al frente y realiza círculos lentos con las muñecas tras usar el teclado.', secs: 35 },
+                    { title: '4. Descanso Ocular (Regla 20-20-20)', text: 'Fija la vista en un objeto lejano por la ventana durante 30 segundos parpadeando suavemente.', secs: 30 }
+                ]
+            },
+            tea5: {
+                tag: 'PAUSA CORTA · 5 MIN',
+                title: '🍵 Ritual de Hidratación & Picoteo Saludable',
+                desc: 'En 5 minutos evita cocinar: sigue este pequeño ritual para hidratar el cerebro.',
+                xp: 30,
+                dew: 15,
+                steps: [
+                    { title: '1. Levántate y Camina a la Cocina', text: 'Deja el teléfono móvil en la mesa de estudio para que tu cerebro descanse de pantallas.', secs: 30 },
+                    { title: '2. Bebe un Vaso Grande de Agua o Infusión', text: 'La hidratación mejora la memoria de trabajo y reduce la sensación de cansancio.', secs: 45 },
+                    { title: '3. Snack Natural Instantáneo', text: 'Toma un puñado de almendras/nueces, una mandarina o una onza de chocolate negro.', secs: 60 }
+                ]
+            },
+            mobility15: {
+                tag: 'PAUSA LARGA · 15 MIN',
+                title: '🌿 Flujo de Movilidad Corporal Anti-Silla',
+                desc: 'Reactiva la circulación de piernas y columna después de varios bloques de estudio.',
+                xp: 70,
+                dew: 30,
+                steps: [
+                    { title: '1. 12 Sentadillas Respiradas', text: 'A ritmo lento y controlado, bajando al inspirar y subiendo al exhalar para activar las piernas.', secs: 50 },
+                    { title: '2. Estiramiento de Columna (Perro-Gato de Pie)', text: 'Apoya las manos en el escritorio, alarga la espalda hacia atrás y deja caer el pecho suavemente.', secs: 50 },
+                    { title: '3. Movilidad de Cadera y Torsión Suave', text: 'Con los pies firmes, gira suavemente el torso a izquierda y derecha dejando los brazos sueltos.', secs: 45 },
+                    { title: '4. Caminata Tranquila por Casa', text: 'Camina sin prisa durante 2 minutos mientras bebes agua.', secs: 90 }
+                ]
+            },
+            reset15: {
+                tag: 'PAUSA LARGA · 15 MIN',
+                title: '🪟 Ventilar Habitación y Ordenar Espacio',
+                desc: 'El orden visual en tu mesa reduce el ruido mental al volver al siguiente Pomodoro.',
+                xp: 65,
+                dew: 30,
+                steps: [
+                    { title: '1. Abrir la Ventana (Renovar Oxígeno)', text: 'El aire cargado de CO2 en una habitación cerrada produce somnolencia. Ventila 3 minutos.', secs: 60 },
+                    { title: '2. Despejar la Superficie de Estudio', text: 'Retira tazas, envases o apuntes que ya no necesites y deja solo el tema actual.', secs: 90 },
+                    { title: '3. Pausa de Ojos Cerrados', text: 'Siéntate cómodo, cierra los ojos 2 minutos y escucha el sonido de lluvia suave.', secs: 120 }
+                ]
+            }
+        };
+
+        /**
+         * ============================================================================
+         * 4. CONTROLADOR PRINCIPAL DE KOMOREBI FOCUS
+         * ============================================================================
+         */
+        class KomorebiFocusApp {
+            constructor() {
+                this.audio = new CalmAudioEngine();
+                this.canvas = new CalmAmbientCanvas('ambientCanvas');
+                this.storageKey = 'komorebi_focus_calm_v1';
+
+                this.state = this.getDefaultState();
+
+                // Estado del temporizador
+                this.timerMode = 'pomodoro'; // 'pomodoro', 'shortBreak', 'longBreak'
+                this.totalSeconds = 25 * 60;
+                this.secondsLeft = 25 * 60;
+                this.isRunning = false;
+                this.timerInterval = null;
+
+                // Estado de navegación y modales
+                this.activeMainView = 'study';
+                this.activeBreakSubTab = 'short5';
+                this.deepFocusActive = false;
+                this.selectedRecipeId = 'toast_avocado';
+                this.breathInterval = null;
+                this.koiAnimFrame = null;
+
+                this.loadState();
+                this.initUI();
+            }
+
+            getDefaultState() {
+                return {
+                    level: 1,
+                    xp: 20,
+                    dewDrops: 40,
+                    cycleStep: 1,
+                    theme: 'linen',
+                    ambientEffect: 'komorebi',
+                    unlockedThemes: ['linen', 'nightcafe'],
+                    unlockedEffects: ['komorebi', 'none'],
+                    activeTaskId: 1,
+                    durations: {
+                        pomodoro: 25,
+                        shortBreak: 5,
+                        longBreak: 15
+                    },
+                    stats: {
+                        focusMinutes: 0,
+                        pomodorosDone: 0
+                    },
+                    tasks: [
+                        { id: 1, title: 'Preparar entrega de Desarrollo de Interfaces', done: false, pomos: 1 },
+                        { id: 2, title: 'Repasar ergonomía visual y revelación progresiva', done: false, pomos: 0 },
+                        { id: 3, title: 'Probar descanso guiado de 5m y recetario de 15m', done: false, pomos: 0 }
+                    ]
+                };
+            }
+
+            loadState() {
+                try {
+                    const raw = localStorage.getItem(this.storageKey);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        this.state = {
+                            ...this.getDefaultState(),
+                            ...parsed,
+                            durations: { ...this.getDefaultState().durations, ...(parsed.durations || {}) },
+                            stats: { ...this.getDefaultState().stats, ...(parsed.stats || {}) }
+                        };
+                    }
+                } catch (e) {}
+            }
+
+            saveState() {
+                try {
+                    localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+                } catch (e) {}
+            }
+
+            initUI() {
+                this.applyTheme(this.state.theme);
+                this.canvas.setMode(this.state.ambientEffect);
+                this.setTimerMode('pomodoro', false);
+                this.renderAll();
+            }
+
+            renderAll() {
+                this.renderHeaderAndMiniProgress();
+                this.renderTasks();
+                this.renderSanctuary();
+            }
+
+            /* ----------------------------------------------------------------
+               NAVEGACIÓN PRINCIPAL (REVELACIÓN PROGRESIVA) Y MODO INMERSIÓN
+               ---------------------------------------------------------------- */
+            switchMainView(viewName) {
+                this.audio.playSoftTap();
+                this.activeMainView = viewName;
+
+                ['study', 'break', 'sanctuary'].forEach(v => {
+                    const sec = document.getElementById(`view-${v}`);
+                    const btn = document.getElementById(`navBtn-${v}`);
+                    if (v === viewName) {
+                        sec.classList.remove('hidden');
+                        sec.classList.add(v === 'break' ? 'flex' : 'grid');
+                        btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer btn-warm-primary relative';
+                    } else {
+                        sec.classList.add('hidden');
+                        sec.classList.remove('flex', 'grid');
+                        btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer text-muted-warm hover:opacity-90 relative';
+                    }
+                });
+
+                if (viewName === 'break') {
+                    document.getElementById('breakSuggestionDot').classList.add('hidden');
+                }
+            }
+
+            toggleDeepFocusMode() {
+                this.audio.playSoftTap();
+                this.deepFocusActive = !this.deepFocusActive;
+                document.body.classList.toggle('deep-focus-active', this.deepFocusActive);
+                const btn = document.getElementById('deepFocusBtn');
+                if (this.deepFocusActive) {
+                    btn.classList.add('btn-warm-primary');
+                    this.showToast('🌙 Modo Inmersión activado: elementos secundarios atenuados para proteger tu atención.');
+                } else {
+                    btn.classList.remove('btn-warm-primary');
+                }
+            }
+
+            toggleQuickDayNight() {
+                this.audio.playSoftTap();
+                const nextTheme = this.state.theme === 'nightcafe' ? 'linen' : 'nightcafe';
+                this.applyTheme(nextTheme);
+                this.saveState();
+                this.renderSanctuary();
+            }
+
+            applyTheme(themeId) {
+                document.documentElement.setAttribute('data-theme', themeId);
+                this.state.theme = themeId;
+                const icon = document.getElementById('dayNightIcon');
+                if (icon) {
+                    icon.className = themeId === 'nightcafe' ? 'fa-solid fa-sun text-amber-400' : 'fa-solid fa-moon';
+                }
+                setTimeout(() => this.canvas.initItems(), 50);
+            }
+
+            toggleProfDrawer() {
+                this.audio.playSoftTap();
+                const drawer = document.getElementById('profDemoDrawer');
+                drawer.classList.toggle('hidden');
+            }
+
+            /* ----------------------------------------------------------------
+               SISTEMA DE NIVELES, GOTAS DE ROCÍO (💧) Y BONSÁI EVOLUTIVO EN SVG
+               ---------------------------------------------------------------- */
+            getXpForNextLevel(level) {
+                return level * 150;
+            }
+
+            getCurrentStageInfo() {
+                const idx = Math.min(BONSAI_STAGES.length - 1, Math.max(0, this.state.level - 1));
+                return BONSAI_STAGES[idx];
+            }
+
+            addProgress(xpGain, dewGain) {
+                this.state.xp += xpGain;
+                this.state.dewDrops += dewGain;
+
+                let leveledUp = false;
+                while (this.state.xp >= this.getXpForNextLevel(this.state.level)) {
+                    this.state.xp -= this.getXpForNextLevel(this.state.level);
+                    this.state.level += 1;
+                    this.state.dewDrops += 25;
+                    leveledUp = true;
+                }
+
+                if (leveledUp) {
+                    const stage = this.getCurrentStageInfo();
+                    this.audio.playSingingBowlChime();
+                    this.showToast(`🌿 ¡Tu Bonsái ha evolucionado a ${stage.name} (Nivel ${this.state.level})! +25 💧`);
+                }
+
+                this.saveState();
+                this.renderAll();
+            }
+
+            renderHeaderAndMiniProgress() {
+                const stage = this.getCurrentStageInfo();
+                const reqXp = this.getXpForNextLevel(this.state.level);
+                const pct = Math.min(100, Math.round((this.state.xp / reqXp) * 100));
+
+                document.getElementById('headerTreeEmoji').textContent = stage.emoji;
+                document.getElementById('headerLevelBadge').textContent = stage.badge;
+                document.getElementById('headerMinutesText').textContent = `${this.state.stats.focusMinutes} min enfocados`;
+                document.getElementById('headerDewDrops').textContent = `💧 ${this.state.dewDrops}`;
+
+                document.getElementById('miniCardTreeIcon').textContent = stage.emoji;
+                document.getElementById('miniCardRankName').textContent = stage.name;
+                document.getElementById('miniCardXpText').textContent = `${this.state.xp} / ${reqXp} XP`;
+                document.getElementById('miniXpBar').style.width = `${pct}%`;
+            }
+
+            // Dibuja el Bonsái en SVG dependiendo del Nivel del estudiante (1 a 5+)
+            renderBonsaiSvg(level) {
+                const g = document.getElementById('bonsaiDynamicStage');
+                if (!g) return;
+
+                const st = Math.min(5, Math.max(1, level));
+
+                if (st === 1) {
+                    // Nivel 1: Semilla con primer tallo tierno
+                    g.innerHTML = `
+                        <g class="bonsai-canopy">
+                            <path d="M150 187 Q150 162 152 150" stroke="#6D543E" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <ellipse cx="142" cy="148" rx="12" ry="7" transform="rotate(-25 142 148)" fill="#6C9170" />
+                            <ellipse cx="161" cy="150" rx="11" ry="6" transform="rotate(25 161 150)" fill="#5A7A60" />
+                        </g>
+                    `;
+                } else if (st === 2) {
+                    // Nivel 2: Brote de Salvia con ramas jóvenes
+                    g.innerHTML = `
+                        <g class="bonsai-canopy">
+                            <path d="M150 187 Q145 150 152 122" stroke="#6D543E" stroke-width="8" stroke-linecap="round" fill="none" />
+                            <path d="M149 155 Q128 142 120 135" stroke="#6D543E" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <path d="M151 142 Q172 132 180 125" stroke="#6D543E" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <ellipse cx="120" cy="132" rx="22" ry="13" fill="#6C9170" />
+                            <ellipse cx="180" cy="122" rx="22" ry="13" fill="#5A7A60" />
+                            <ellipse cx="152" cy="112" rx="28" ry="16" fill="#7DA382" />
+                        </g>
+                    `;
+                } else if (st === 3) {
+                    // Nivel 3: Bonsái Joven esculpido
+                    g.innerHTML = `
+                        <g class="bonsai-canopy">
+                            <path d="M150 187 C140 155, 165 135, 148 98" stroke="#6D543E" stroke-width="12" stroke-linecap="round" fill="none" />
+                            <path d="M148 148 Q115 138 102 125" stroke="#6D543E" stroke-width="7" stroke-linecap="round" fill="none" />
+                            <path d="M153 132 Q188 122 200 112" stroke="#6D543E" stroke-width="7" stroke-linecap="round" fill="none" />
+                            <ellipse cx="102" cy="120" rx="32" ry="16" fill="#5A7A60" />
+                            <ellipse cx="200" cy="108" rx="30" ry="15" fill="#5A7A60" />
+                            <ellipse cx="148" cy="88" rx="42" ry="22" fill="#6C9170" />
+                            <ellipse cx="140" cy="82" rx="28" ry="14" fill="#84A988" />
+                        </g>
+                    `;
+                } else if (st === 4) {
+                    // Nivel 4: Roble Sereno frondoso
+                    g.innerHTML = `
+                        <g class="bonsai-canopy">
+                            <path d="M150 187 C132 150, 168 125, 148 80" stroke="#5E4735" stroke-width="15" stroke-linecap="round" fill="none" />
+                            <path d="M144 148 Q105 135 88 118" stroke="#5E4735" stroke-width="9" stroke-linecap="round" fill="none" />
+                            <path d="M154 130 Q195 118 212 102" stroke="#5E4735" stroke-width="9" stroke-linecap="round" fill="none" />
+                            <ellipse cx="88" cy="112" rx="38" ry="19" fill="#4E6E54" />
+                            <ellipse cx="212" cy="98" rx="38" ry="19" fill="#4E6E54" />
+                            <ellipse cx="122" cy="86" rx="42" ry="22" fill="#5A7A60" />
+                            <ellipse cx="176" cy="84" rx="40" ry="21" fill="#6C9170" />
+                            <ellipse cx="150" cy="66" rx="48" ry="24" fill="#7DA382" />
+                        </g>
+                    `;
+                } else {
+                    // Nivel 5+: Cerezo Komorebi en Flor (Sakura cálido)
+                    g.innerHTML = `
+                        <g class="bonsai-canopy">
+                            <path d="M150 187 C130 148, 170 122, 148 76" stroke="#594132" stroke-width="16" stroke-linecap="round" fill="none" />
+                            <path d="M144 146 Q102 132 85 115" stroke="#594132" stroke-width="9" stroke-linecap="round" fill="none" />
+                            <path d="M154 128 Q198 115 215 98" stroke="#594132" stroke-width="9" stroke-linecap="round" fill="none" />
+                            <ellipse cx="86" cy="110" rx="40" ry="20" fill="#C98A82" />
+                            <ellipse cx="214" cy="96" rx="40" ry="20" fill="#C98A82" />
+                            <ellipse cx="120" cy="82" rx="45" ry="23" fill="#DCA29A" />
+                            <ellipse cx="180" cy="80" rx="45" ry="23" fill="#D5958D" />
+                            <ellipse cx="150" cy="62" rx="52" ry="25" fill="#E8B8B0" />
+                            <circle cx="132" cy="58" r="4" fill="#FFF5F2" />
+                            <circle cx="168" cy="66" r="4" fill="#FFF5F2" />
+                            <circle cx="95" cy="106" r="3.5" fill="#FFF5F2" />
+                            <circle cx="205" cy="92" r="3.5" fill="#FFF5F2" />
+                        </g>
+                    `;
+                }
+            }
+
+            /* ----------------------------------------------------------------
+               TEMPORIZADOR POMODORO Y FLUJO CON EL CENTRO DE PAUSA
+               ---------------------------------------------------------------- */
+            setTimerMode(mode, playTap = true) {
+                if (playTap) this.audio.playSoftTap();
+                this.pauseTimer();
+                this.timerMode = mode;
+
+                const minsMap = {
+                    pomodoro: this.state.durations.pomodoro,
+                    shortBreak: this.state.durations.shortBreak,
+                    longBreak: this.state.durations.longBreak
+                };
+
+                const labelsMap = {
+                    pomodoro: 'SESIÓN DE ENFOQUE',
+                    shortBreak: 'PAUSA CORTA · 5 MIN',
+                    longBreak: 'PAUSA LARGA · 15 MIN'
+                };
+
+                this.totalSeconds = (minsMap[mode] || 25) * 60;
+                this.secondsLeft = this.totalSeconds;
+
+                ['pomodoro', 'shortBreak', 'longBreak'].forEach(m => {
+                    const tab = document.getElementById(`modeTab-${m}`);
+                    if (!tab) return;
+                    tab.className = m === mode
+                        ? 'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer btn-warm-primary'
+                        : 'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer text-muted-warm';
+                });
+
+                document.getElementById('timerStateSubtitle').textContent = labelsMap[mode];
+
+                // Mostrar u ocultar sugerencia serena de descanso
+                const banner = document.getElementById('calmBreakBanner');
+                if (mode === 'shortBreak') {
+                    banner.classList.remove('hidden');
+                    banner.classList.add('flex');
+                    document.getElementById('calmBreakEmoji').textContent = '🍵';
+                    document.getElementById('calmBreakTitle').textContent = 'Estás en Pausa Corta (5 min)';
+                    document.getElementById('calmBreakDesc').textContent = 'Respira, descansa la vista o estira el cuello sin prisa.';
+                    this.setBreakSubTab('short5', false);
+                } else if (mode === 'longBreak') {
+                    banner.classList.remove('hidden');
+                    banner.classList.add('flex');
+                    document.getElementById('calmBreakEmoji').textContent = '🍲';
+                    document.getElementById('calmBreakTitle').textContent = 'Estás en Pausa Larga (15 min)';
+                    document.getElementById('calmBreakDesc').textContent = 'Prepara algo rico con el Recetario Calma o estira las piernas.';
+                    this.setBreakSubTab('long15', false);
+                } else {
+                    banner.classList.add('hidden');
+                    banner.classList.remove('flex');
+                }
+
+                this.updateTimerUI();
+            }
+
+            toggleTimer() {
+                this.audio.playSoftTap();
+                if (this.isRunning) {
+                    this.pauseTimer();
+                } else {
+                    this.startTimer();
+                }
+            }
+
+            startTimer() {
+                if (this.isRunning) return;
+                this.isRunning = true;
+                document.getElementById('primaryTimerIcon').className = 'fa-solid fa-pause text-xs';
+                document.getElementById('primaryTimerText').textContent = 'Pausar';
+
+                this.timerInterval = setInterval(() => {
+                    if (this.secondsLeft > 0) {
+                        this.secondsLeft -= 1;
+                        this.updateTimerUI();
+                    } else {
+                        this.completeSession();
+                    }
+                }, 1000);
+            }
+
+            pauseTimer() {
+                this.isRunning = false;
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+                document.getElementById('primaryTimerIcon').className = 'fa-solid fa-play text-xs';
+                document.getElementById('primaryTimerText').textContent = this.timerMode === 'pomodoro' ? 'Comenzar Enfoque' : 'Iniciar Pausa';
+            }
+
+            resetTimer() {
+                this.audio.playSoftTap();
+                this.pauseTimer();
+                this.secondsLeft = this.totalSeconds;
+                this.updateTimerUI();
+            }
+
+            updateTimerUI() {
+                const m = Math.floor(this.secondsLeft / 60);
+                const s = this.secondsLeft % 60;
+                const str = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+                document.getElementById('mainTimerDigits').textContent = str;
+                document.getElementById('breakViewTimerDisplay').textContent = str;
+                document.getElementById('modalBreakLiveClock').textContent = str;
+                document.getElementById('zenGameLiveClock').textContent = str;
+
+                const circumference = 703.7;
+                const progress = (this.totalSeconds - this.secondsLeft) / Math.max(1, this.totalSeconds);
+                const offset = circumference * (1 - progress);
+                const ring = document.getElementById('timerRingProgress');
+                if (ring) ring.style.strokeDashoffset = offset;
+
+                // Actualizar puntos del ciclo
+                let dots = '';
+                for (let i = 1; i <= 4; i++) {
+                    dots += i <= this.state.cycleStep ? '● ' : '○ ';
+                }
+                document.getElementById('cycleDotsIcons').textContent = dots.trim();
+            }
+
+            completeSession() {
+                this.pauseTimer();
+                this.audio.playSingingBowlChime();
+
+                if (this.timerMode === 'pomodoro') {
+                    const minsAdded = this.totalSeconds <= 10 ? 25 : this.state.durations.pomodoro;
+                    this.state.stats.focusMinutes += minsAdded;
+                    this.state.stats.pomodorosDone += 1;
+
+                    const activeTask = this.state.tasks.find(t => t.id === this.state.activeTaskId);
+                    if (activeTask) activeTask.pomos = (activeTask.pomos || 0) + 1;
+
+                    const finishedCycle = this.state.cycleStep;
+                    this.state.cycleStep = (this.state.cycleStep % 4) + 1;
+
+                    this.addProgress(90, 25);
+                    document.getElementById('breakSuggestionDot').classList.remove('hidden');
+
+                    if (finishedCycle === 4) {
+                        this.setTimerMode('longBreak', false);
+                        this.showToast('🍵 ¡4º Bloque completado! Te corresponde una Pausa Larga de 15 min.');
+                    } else {
+                        this.setTimerMode('shortBreak', false);
+                        this.showToast('🌿 ¡Sesión de enfoque completada! +90 XP y +25 💧. Tómate 5 min de pausa.');
+                    }
+                } else {
+                    this.addProgress(30, 10);
+                    this.setTimerMode('pomodoro', false);
+                    this.showToast('✨ Pausa finalizada. Mente descansada para volver al estudio.');
+                }
+            }
+
+            setAmbientSound(mode) {
+                this.audio.setAmbientMode(mode);
+                ['off', 'rain', 'cafe', 'fire'].forEach(m => {
+                    const btn = document.getElementById(`soundBtn-${m}`);
+                    if (!btn) return;
+                    btn.className = m === mode
+                        ? 'px-2.5 py-1 rounded-lg font-medium cursor-pointer btn-warm-primary'
+                        : 'px-2.5 py-1 rounded-lg font-medium cursor-pointer btn-warm-secondary';
+                });
+            }
+
+            /* ----------------------------------------------------------------
+               CUADERNO DE TAREAS DE ESTUDIO
+               ---------------------------------------------------------------- */
+            addTask(e) {
+                e.preventDefault();
+                const input = document.getElementById('newTaskInput');
+                const title = input.value.trim();
+                if (!title) return;
+
+                const newTask = { id: Date.now(), title, done: false, pomos: 0 };
+                this.state.tasks.unshift(newTask);
+                if (!this.state.activeTaskId) this.state.activeTaskId = newTask.id;
+
+                input.value = '';
+                this.audio.playSoftTap();
+                this.saveState();
+                this.renderTasks();
+            }
+
+            toggleTaskDone(id) {
+                const task = this.state.tasks.find(t => t.id === id);
+                if (!task) return;
+                task.done = !task.done;
+                if (task.done) {
+                    this.audio.playSingingBowlChime();
+                    this.addProgress(45, 15);
+                    this.showToast('✓ Objetivo de estudio completado (+45 XP · +15 💧)');
+                } else {
+                    this.saveState();
+                    this.renderTasks();
+                }
+            }
+
+            selectActiveTask(id) {
+                this.audio.playSoftTap();
+                this.state.activeTaskId = id;
+                this.saveState();
+                this.renderTasks();
+            }
+
+            deleteTask(id) {
+                this.audio.playSoftTap();
+                this.state.tasks = this.state.tasks.filter(t => t.id !== id);
+                if (this.state.activeTaskId === id) {
+                    const next = this.state.tasks.find(t => !t.done);
+                    this.state.activeTaskId = next ? next.id : null;
+                }
+                this.saveState();
+                this.renderTasks();
+            }
+
+            renderTasks() {
+                const list = document.getElementById('studyTasksList');
+                const doneCount = this.state.tasks.filter(t => t.done).length;
+                document.getElementById('tasksCountBadge').textContent = `${doneCount}/${this.state.tasks.length}`;
+
+                const activeTask = this.state.tasks.find(t => t.id === this.state.activeTaskId);
+                document.getElementById('currentTaskLabel').textContent = activeTask ? activeTask.title : 'Estudio libre';
+
+                if (this.state.tasks.length === 0) {
+                    list.innerHTML = `<div class="text-xs text-muted-warm text-center py-6">Tu cuaderno está limpio. Añade tu próximo tema arriba.</div>`;
+                    return;
+                }
+
+                list.innerHTML = this.state.tasks.map(t => {
+                    const isActive = t.id === this.state.activeTaskId;
+                    return `
+                        <div class="warm-subcard rounded-2xl p-3 flex items-center justify-between gap-2.5 ${isActive ? 'border-[var(--accent-primary)]' : ''}">
+                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                <button onclick="app.toggleTaskDone(${t.id})" class="w-5 h-5 rounded-lg border border-[var(--border-warm)] flex items-center justify-center text-xs cursor-pointer shrink-0 ${t.done ? 'btn-warm-primary' : 'bg-transparent'}">
+                                    ${t.done ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                                </button>
+                                <div onclick="app.selectActiveTask(${t.id})" class="min-w-0 flex-1 cursor-pointer">
+                                    <div class="text-xs sm:text-sm font-medium truncate ${t.done ? 'line-through text-muted-warm' : ''}">${this.escapeHtml(t.title)}</div>
+                                    <div class="text-[11px] text-muted-warm flex items-center gap-2">
+                                        <span>🍅 ${t.pomos || 0} sesiones</span>
+                                        ${isActive ? '<span class="font-semibold" style="color: var(--accent-primary)">· En curso</span>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="app.deleteTask(${t.id})" class="text-xs text-muted-warm hover:opacity-100 opacity-60 px-1.5 cursor-pointer" title="Borrar tarea">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            /* ----------------------------------------------------------------
+               CENTRO DE PAUSA CONSCIENTE (5M VS 15M) Y RECETARIO GUIADO
+               ---------------------------------------------------------------- */
+            setBreakSubTab(subTab, playTap = true) {
+                if (playTap) this.audio.playSoftTap();
+                this.activeBreakSubTab = subTab;
+
+                ['short5', 'long15', 'zengames'].forEach(st => {
+                    const btn = document.getElementById(`breakSubBtn-${st}`);
+                    const content = document.getElementById(`breakSubContent-${st}`);
+                    if (st === subTab) {
+                        btn.className = 'p-4 rounded-2xl text-left transition cursor-pointer btn-warm-primary';
+                        content.classList.remove('hidden');
+                        content.classList.add('grid');
+                    } else {
+                        btn.className = 'p-4 rounded-2xl text-left transition cursor-pointer warm-card hover:opacity-95';
+                        content.classList.add('hidden');
+                        content.classList.remove('grid');
+                    }
+                });
+            }
+
+            suggestCalmBreakActivity() {
+                this.audio.playSoftTap();
+                if (this.timerMode === 'longBreak' || this.activeBreakSubTab === 'long15') {
+                    this.openBreakModal('chef15');
+                } else {
+                    const options = ['breath5', 'stretch5', 'tea5'];
+                    const pick = options[Math.floor(Math.random() * options.length)];
+                    this.openBreakModal(pick);
+                }
+            }
+
+            openBreakModal(planId) {
+                this.audio.playSoftTap();
+                this.clearBreathTimer();
+                const modal = document.getElementById('breakActivityModal');
+                const body = document.getElementById('breakActivityModalBody');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                if (planId === 'breath5') {
+                    document.getElementById('modalBreakTag').textContent = 'PAUSA CORTA · 5 MIN';
+                    body.innerHTML = `
+                        <div class="text-center py-2">
+                            <h3 class="font-serif-warm text-xl sm:text-2xl font-semibold">🌬️ Respiración Armónica 4-4-4</h3>
+                            <p class="text-xs sm:text-sm text-muted-warm mt-1">Acompaña el movimiento suave del círculo para relajar la vista y el sistema nervioso</p>
+
+                            <div class="my-10 flex items-center justify-center">
+                                <div id="calmBreathCircle" class="breath-circle-guide w-32 h-32 rounded-full flex flex-col items-center justify-center shadow-sm" style="background-color: var(--accent-primary); color: #FAF8F5;">
+                                    <span id="calmBreathPhase" class="font-serif-warm font-semibold text-sm tracking-wide">Inspira</span>
+                                    <span id="calmBreathSec" class="font-mono-calm text-xl font-bold mt-0.5">4s</span>
+                                </div>
+                            </div>
+
+                            <button onclick="app.finishBreakActivity(30, 15, 'Respiración Armónica')" class="btn-warm-primary w-full py-3 rounded-2xl text-xs sm:text-sm font-semibold cursor-pointer">
+                                Completar Pausa (+30 XP · +15 💧)
+                            </button>
+                        </div>
+                    `;
+                    this.startCalmBreathingGuide();
+                    return;
+                }
+
+                if (planId === 'chef15') {
+                    document.getElementById('modalBreakTag').textContent = 'PAUSA LARGA · 15 MIN';
+                    this.renderCalmChefModal();
+                    return;
+                }
+
+                const plan = GUIDED_BREAK_PLANS[planId];
+                if (!plan) return;
+                document.getElementById('modalBreakTag').textContent = plan.tag;
+
+                body.innerHTML = `
+                    <div>
+                        <h3 class="font-serif-warm text-xl font-semibold">${plan.title}</h3>
+                        <p class="text-xs sm:text-sm text-muted-warm mt-1">${plan.desc}</p>
+
+                        <div class="mt-4 space-y-2.5">
+                            ${plan.steps.map(st => `
+                                <div class="warm-subcard p-3.5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div>
+                                        <div class="text-xs sm:text-sm font-semibold">${st.title}</div>
+                                        <p class="text-xs text-muted-warm mt-0.5">${st.text}</p>
+                                    </div>
+                                    <button onclick="app.runStepTimer(this, ${st.secs})" class="btn-warm-secondary px-3 py-1.5 rounded-xl text-xs font-mono-calm font-semibold shrink-0 cursor-pointer">
+                                        ⏱️ ${st.secs}s
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <button onclick="app.finishBreakActivity(${plan.xp}, ${plan.dew}, '${plan.title}')" class="btn-warm-primary w-full mt-6 py-3 rounded-2xl text-xs sm:text-sm font-semibold cursor-pointer">
+                            Terminar Actividad (+${plan.xp} XP · +${plan.dew} 💧)
+                        </button>
+                    </div>
+                `;
+            }
+
+            renderCalmChefModal() {
+                const body = document.getElementById('breakActivityModalBody');
+                const recipe = CALM_RECIPES_15M.find(r => r.id === this.selectedRecipeId) || CALM_RECIPES_15M[0];
+
+                body.innerHTML = `
+                    <div>
+                        <h3 class="font-serif-warm text-xl font-semibold">🥑 Cocina Calma en 15 Minutos</h3>
+                        <p class="text-xs text-muted-warm mt-0.5">Recetas ligeras pensadas para hacerse y comerse sin prisa en tu descanso largo:</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 my-3.5">
+                            ${CALM_RECIPES_15M.map(r => `
+                                <button onclick="app.selectCalmRecipe('${r.id}')" class="p-2.5 rounded-xl text-left text-xs font-semibold transition cursor-pointer ${
+                                    r.id === recipe.id ? 'btn-warm-primary' : 'warm-subcard'
+                                }">
+                                    <div class="truncate">${r.name}</div>
+                                    <div class="text-[10px] opacity-80 mt-0.5">⏱️ ${r.time}</div>
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div class="warm-subcard rounded-2xl p-3.5 mb-3">
+                            <div class="flex flex-wrap items-center justify-between gap-1 text-xs font-semibold mb-2">
+                                <span>🧺 Ingredientes sencillos</span>
+                                <span class="text-muted-warm">${recipe.benefit}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${recipe.ingredients.map(i => `<span class="px-2.5 py-1 rounded-lg warm-card text-xs">${i}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="space-y-2.5">
+                            ${recipe.steps.map((st, idx) => `
+                                <div class="warm-subcard p-3 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                                    <div class="flex items-start gap-2.5">
+                                        <span class="w-5 h-5 rounded-full badge-warm text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+                                        <p class="text-xs leading-relaxed">${st.text}</p>
+                                    </div>
+                                    <button onclick="app.runStepTimer(this, ${st.secs})" class="btn-warm-secondary px-3 py-1.5 rounded-xl text-xs font-mono-calm font-semibold shrink-0 cursor-pointer">
+                                        ⏲️ ${Math.floor(st.secs / 60)} min
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <button onclick="app.finishBreakActivity(75, 35, 'Receta Calma 15m')" class="btn-warm-primary w-full mt-5 py-3 rounded-2xl text-xs sm:text-sm font-semibold cursor-pointer">
+                            ¡Receta Completada! (+75 XP · +35 💧)
+                        </button>
+                    </div>
+                `;
+            }
+
+            selectCalmRecipe(id) {
+                this.audio.playSoftTap();
+                this.selectedRecipeId = id;
+                this.renderCalmChefModal();
+            }
+
+            runStepTimer(btn, seconds) {
+                this.audio.playSoftTap();
+                if (btn.dataset.running === '1') return;
+                btn.dataset.running = '1';
+                let rem = seconds;
+
+                const tick = () => {
+                    const m = Math.floor(rem / 60);
+                    const s = rem % 60;
+                    btn.textContent = m > 0 ? `⏳ ${m}:${String(s).padStart(2, '0')}` : `⏳ ${s}s`;
+                    if (rem <= 0) {
+                        clearInterval(timer);
+                        btn.dataset.running = '0';
+                        btn.textContent = '✓ Listo';
+                        this.audio.playSingingBowlChime();
+                    }
+                    rem -= 1;
+                };
+                tick();
+                const timer = setInterval(tick, 1000);
+            }
+
+            startCalmBreathingGuide() {
+                const phases = [
+                    { name: 'Inspira suave', scale: 'scale(1.32)' },
+                    { name: 'Mantén el aire', scale: 'scale(1.32)' },
+                    { name: 'Suelta despacio', scale: 'scale(0.88)' }
+                ];
+                let idx = 0;
+                let sec = 4;
+
+                const update = () => {
+                    const circle = document.getElementById('calmBreathCircle');
+                    const pText = document.getElementById('calmBreathPhase');
+                    const sText = document.getElementById('calmBreathSec');
+                    if (!circle || !pText || !sText) return;
+                    pText.textContent = phases[idx].name;
+                    sText.textContent = `${sec}s`;
+                    circle.style.transform = phases[idx].scale;
+                };
+
+                update();
+                this.breathInterval = setInterval(() => {
+                    sec -= 1;
+                    if (sec <= 0) {
+                        sec = 4;
+                        idx = (idx + 1) % phases.length;
+                    }
+                    update();
+                }, 1000);
+            }
+
+            clearBreathTimer() {
+                if (this.breathInterval) {
+                    clearInterval(this.breathInterval);
+                    this.breathInterval = null;
+                }
+            }
+
+            finishBreakActivity(xp, dew, label) {
+                this.audio.playSingingBowlChime();
+                this.addProgress(xp, dew);
+                this.closeBreakModal();
+                this.showToast(`🍵 ${label} completada (+${xp} XP y +${dew} 💧 Gotas de Rocío).`);
+            }
+
+            closeBreakModal() {
+                this.clearBreathTimer();
+                const modal = document.getElementById('breakActivityModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            /* ----------------------------------------------------------------
+               JUEGOS ZEN DE BAJA ESTIMULACIÓN (ESTANQUE KOI, HERBARIO, LÓGICA 4X4)
+               ---------------------------------------------------------------- */
+            openZenGameModal(gameType) {
+                this.audio.playSoftTap();
+                this.stopKoiLoop();
+                const modal = document.getElementById('zenGameModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                if (gameType === 'koi') {
+                    this.initKoiPondGame();
+                } else if (gameType === 'herbarium') {
+                    this.initHerbariumMemoryGame();
+                } else if (gameType === 'zensudoku') {
+                    this.initZenSudokuGame();
+                }
+            }
+
+            closeZenGameModal() {
+                this.audio.playSoftTap();
+                this.stopKoiLoop();
+                const modal = document.getElementById('zenGameModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            stopKoiLoop() {
+                if (this.koiAnimFrame) {
+                    cancelAnimationFrame(this.koiAnimFrame);
+                    this.koiAnimFrame = null;
+                }
+            }
+
+            /* --- JUEGO ZEN 1: ESTANQUE KOI SERENO (CANVAS ORGÁNICO SIN ESTRÉS) --- */
+            initKoiPondGame() {
+                document.getElementById('zenGameTitle').textContent = '🐟 Estanque Koi Sereno';
+                const stage = document.getElementById('zenGameStage');
+
+                stage.innerHTML = `
+                    <div class="w-full flex items-center justify-between mb-3 px-4 py-2 rounded-2xl warm-subcard text-xs">
+                        <span>Pétalos de loto recogidos: <strong id="koiPetalsCount" class="font-mono-calm">0</strong></span>
+                        <span class="text-muted-warm">Mueve el ratón o toca el agua para guiar al pez Koi</span>
+                        <button onclick="app.claimKoiReward()" class="btn-warm-primary px-3 py-1 rounded-xl font-semibold cursor-pointer">
+                            Guardar Rocío 💧
+                        </button>
+                    </div>
+                    <canvas id="koiPondCanvas" width="540" height="300" class="w-full max-w-[540px] h-[270px] sm:h-[300px] rounded-3xl cursor-pointer border border-[var(--border-warm)]" style="background-color: #D8E4DF;"></canvas>
+                `;
+
+                const canvas = document.getElementById('koiPondCanvas');
+                const ctx = canvas.getContext('2d');
+                this.koiPetalsCollected = 0;
+
+                const koi = { x: 270, y: 150, tx: 270, ty: 150, angle: 0 };
+                const ripples = [];
+                const petals = Array.from({ length: 5 }, () => ({
+                    x: Math.random() * 460 + 40,
+                    y: Math.random() * 220 + 40,
+                    r: 6
+                }));
+                const lilyPads = [
+                    { x: 95, y: 75, r: 26 },
+                    { x: 430, y: 220, r: 30 },
+                    { x: 130, y: 235, r: 22 }
+                ];
+
+                const setTarget = (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    koi.tx = (e.clientX - rect.left) * (canvas.width / rect.width);
+                    koi.ty = (e.clientY - rect.top) * (canvas.height / rect.height);
+                    ripples.push({ x: koi.tx, y: koi.ty, r: 3, alpha: 0.45 });
+                };
+
+                canvas.addEventListener('pointermove', setTarget);
+                canvas.addEventListener('pointerdown', setTarget);
+
+                const renderPond = () => {
+                    if (!document.getElementById('koiPondCanvas')) return;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Mover suavemente el pez Koi hacia el cursor
+                    const dx = koi.tx - koi.x;
+                    const dy = koi.ty - koi.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist > 2) {
+                        koi.angle = Math.atan2(dy, dx);
+                        koi.x += dx * 0.035;
+                        koi.y += dy * 0.035;
+                    }
+
+                    // Dibujar ondas de agua suaves
+                    for (let i = ripples.length - 1; i >= 0; i--) {
+                        const rp = ripples[i];
+                        rp.r += 0.55;
+                        rp.alpha -= 0.008;
+                        if (rp.alpha <= 0) {
+                            ripples.splice(i, 1);
+                            continue;
+                        }
+                        ctx.beginPath();
+                        ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(90, 122, 96, ${rp.alpha})`;
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+
+                    // Dibujar pétalos de loto flotantes
+                    petals.forEach(pt => {
+                        const d = Math.hypot(koi.x - pt.x, koi.y - pt.y);
+                        if (d < 22) {
+                            this.koiPetalsCollected += 1;
+                            const countEl = document.getElementById('koiPetalsCount');
+                            if (countEl) countEl.textContent = this.koiPetalsCollected;
+                            this.audio.playSoftTap();
+                            ripples.push({ x: pt.x, y: pt.y, r: 5, alpha: 0.6 });
+                            pt.x = Math.random() * 460 + 40;
+                            pt.y = Math.random() * 220 + 40;
+                        }
+
+                        ctx.beginPath();
+                        ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+                        ctx.fillStyle = '#E09F95';
+                        ctx.fill();
+                    });
+
+                    // Dibujar el Pez Koi (Cuerpo orgánico cálido naranja/crema)
+                    ctx.save();
+                    ctx.translate(koi.x, koi.y);
+                    ctx.rotate(koi.angle);
+                    // Cola ondulante
+                    const tailSwing = Math.sin(Date.now() * 0.008) * 4;
+                    ctx.beginPath();
+                    ctx.moveTo(-14, 0);
+                    ctx.lineTo(-26, -7 + tailSwing);
+                    ctx.lineTo(-26, 7 + tailSwing);
+                    ctx.closePath();
+                    ctx.fillStyle = '#D47A55';
+                    ctx.fill();
+                    // Cuerpo
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 16, 7.5, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = '#FAF3EB';
+                    ctx.fill();
+                    // Manchas Koi terracota
+                    ctx.beginPath();
+                    ctx.arc(4, -1, 4.5, 0, Math.PI * 2);
+                    ctx.fillStyle = '#C86D49';
+                    ctx.fill();
+                    ctx.restore();
+
+                    // Dibujar hojas de nenúfar
+                    lilyPads.forEach(lp => {
+                        ctx.beginPath();
+                        ctx.arc(lp.x, lp.y, lp.r, 0.2, Math.PI * 1.9);
+                        ctx.lineTo(lp.x, lp.y);
+                        ctx.closePath();
+                        ctx.fillStyle = 'rgba(90, 122, 96, 0.42)';
+                        ctx.fill();
+                    });
+
+                    this.koiAnimFrame = requestAnimationFrame(renderPond);
+                };
+
+                renderPond();
+            }
+
+            claimKoiReward() {
+                const petals = this.koiPetalsCollected || 0;
+                const dew = Math.max(10, petals * 3);
+                const xp = Math.max(20, petals * 5);
+                this.audio.playSingingBowlChime();
+                this.addProgress(xp, dew);
+                this.closeZenGameModal();
+                this.showToast(`🐟 Pausa en el Estanque Koi guardada: +${xp} XP y +${dew} 💧`);
+            }
+
+            /* --- JUEGO ZEN 2: HERBARIO DE MEMORIA BOTÁNICA --- */
+            initHerbariumMemoryGame() {
+                document.getElementById('zenGameTitle').textContent = '🌿 Herbario de Memoria Botánica';
+                const stage = document.getElementById('zenGameStage');
+                const plants = ['🌿', '🍂', '🌸', '🍄', '🌱', '🌾', '🪴', '🌰'];
+                const deck = [...plants, ...plants].sort(() => Math.random() - 0.5);
+
+                this.herbState = { deck, flipped: [], matched: [], moves: 0, busy: false };
+
+                stage.innerHTML = `
+                    <div class="w-full flex items-center justify-between mb-3 px-4 py-2 rounded-2xl warm-subcard text-xs">
+                        <span>Especies encontradas: <strong id="herbPairsCount">0 / 8</strong></span>
+                        <span>Intentos: <strong id="herbMovesCount">0</strong></span>
+                        <button onclick="app.initHerbariumMemoryGame()" class="underline cursor-pointer">Barajar de nuevo</button>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2.5 w-full max-w-md">
+                        ${deck.map((_, i) => `
+                            <button onclick="app.flipHerbCard(${i})" id="herbCard-${i}" class="h-16 sm:h-20 rounded-2xl warm-subcard flex items-center justify-center text-2xl transition cursor-pointer">
+                                <span class="text-xs opacity-40">🍃</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            flipHerbCard(idx) {
+                const st = this.herbState;
+                if (!st || st.busy || st.flipped.includes(idx) || st.matched.includes(idx)) return;
+
+                this.audio.playSoftTap();
+                st.flipped.push(idx);
+                const el = document.getElementById(`herbCard-${idx}`);
+                if (el) el.innerHTML = `<span>${st.deck[idx]}</span>`;
+
+                if (st.flipped.length === 2) {
+                    st.moves += 1;
+                    document.getElementById('herbMovesCount').textContent = st.moves;
+                    const [a, b] = st.flipped;
+
+                    if (st.deck[a] === st.deck[b]) {
+                        st.matched.push(a, b);
+                        st.flipped = [];
+                        document.getElementById('herbPairsCount').textContent = `${st.matched.length / 2} / 8`;
+                        if (st.matched.length === st.deck.length) {
+                            this.audio.playSingingBowlChime();
+                            this.addProgress(45, 25);
+                            this.showToast('🌿 ¡Herbario completado con calma! +45 XP y +25 💧');
+                        }
+                    } else {
+                        st.busy = true;
+                        setTimeout(() => {
+                            [a, b].forEach(i => {
+                                const card = document.getElementById(`herbCard-${i}`);
+                                if (card) card.innerHTML = `<span class="text-xs opacity-40">🍃</span>`;
+                            });
+                            st.flipped = [];
+                            st.busy = false;
+                        }, 650);
+                    }
+                }
+            }
+
+            /* --- JUEGO ZEN 3: JARDÍN ZEN DE LÓGICA 4X4 (MINI-SUDOKU NATURAL) --- */
+            initZenSudokuGame() {
+                document.getElementById('zenGameTitle').textContent = '🪨 Jardín Zen de Lógica (4x4)';
+                const stage = document.getElementById('zenGameStage');
+
+                // Solución válida 4x4 con símbolos botánicos
+                this.sudokuSymbols = ['🌱', '🌸', '🍂', '💧'];
+                this.sudokuSolution = [
+                    [0, 1, 2, 3],
+                    [2, 3, 0, 1],
+                    [1, 0, 3, 2],
+                    [3, 2, 1, 0]
+                ];
+                this.sudokuBoard = [
+                    [0, null, 2, null],
+                    [null, 3, null, 1],
+                    [1, null, 3, null],
+                    [null, 2, null, 0]
+                ];
+                this.sudokuFixed = this.sudokuBoard.map(row => row.map(cell => cell !== null));
+
+                this.renderZenSudokuBoard();
+            }
+
+            renderZenSudokuBoard() {
+                const stage = document.getElementById('zenGameStage');
+                stage.innerHTML = `
+                    <p class="text-xs text-muted-warm mb-3 text-center max-w-md">
+                        Haz clic en las casillas vacías para alternar entre (🌱, 🌸, 🍂, 💧) de forma que no se repita ningún elemento en la misma fila ni columna.
+                    </p>
+                    <div class="grid grid-cols-4 gap-2 w-full max-w-xs">
+                        ${this.sudokuBoard.map((row, r) => row.map((val, c) => {
+                            const isFixed = this.sudokuFixed[r][c];
+                            const symbol = val !== null ? this.sudokuSymbols[val] : '';
+                            return `
+                                <button
+                                    onclick="app.cycleSudokuCell(${r}, ${c})"
+                                    class="h-14 sm:h-16 rounded-2xl text-2xl flex items-center justify-center transition ${
+                                        isFixed ? 'warm-subcard opacity-80 cursor-default' : 'warm-card border-2 border-[var(--accent-primary)] cursor-pointer'
+                                    }"
+                                >
+                                    ${symbol}
+                                </button>
+                            `;
+                        }).join('')).join('')}
+                    </div>
+                `;
+            }
+
+            cycleSudokuCell(r, c) {
+                if (this.sudokuFixed[r][c]) return;
+                this.audio.playSoftTap();
+                const current = this.sudokuBoard[r][c];
+                this.sudokuBoard[r][c] = current === null ? 0 : (current + 1) % 4;
+                this.renderZenSudokuBoard();
+
+                // Comprobar si está resuelto
+                const solved = this.sudokuBoard.every((row, ri) =>
+                    row.every((val, ci) => val === this.sudokuSolution[ri][ci])
+                );
+                if (solved) {
+                    this.audio.playSingingBowlChime();
+                    this.addProgress(50, 25);
+                    this.showToast('🪨 ¡Armonía alcanzada en el Jardín Zen! +50 XP y +25 💧');
+                }
+            }
+
+            /* ----------------------------------------------------------------
+               SANTUARIO: PALETAS DE COLOR Y ATMÓSFERAS SUtiles
+               ---------------------------------------------------------------- */
+            selectOrUnlockPalette(paletteId) {
+                const pal = WARM_PALETTES.find(p => p.id === paletteId);
+                if (!pal) return;
+
+                const isUnlocked = this.state.unlockedThemes.includes(paletteId) || this.state.level >= pal.reqLevel;
+
+                if (isUnlocked) {
+                    if (!this.state.unlockedThemes.includes(paletteId)) this.state.unlockedThemes.push(paletteId);
+                    this.audio.playSoftTap();
+                    this.applyTheme(paletteId);
+                    this.saveState();
+                    this.renderSanctuary();
+                    this.showToast(`🎨 Paleta cálida "${pal.name}" aplicada.`);
+                } else if (this.state.dewDrops >= pal.price) {
+                    this.state.dewDrops -= pal.price;
+                    this.state.unlockedThemes.push(paletteId);
+                    this.audio.playSingingBowlChime();
+                    this.applyTheme(paletteId);
+                    this.saveState();
+                    this.renderAll();
+                    this.showToast(`🌿 Paleta "${pal.name}" desbloqueada.`);
+                } else {
+                    this.showToast(`Necesitas Nivel ${pal.reqLevel} o ${pal.price} 💧 Gotas de Rocío.`);
+                }
+            }
+
+            selectOrUnlockEffect(effectId) {
+                const eff = AMBIENT_EFFECTS_CATALOG.find(e => e.id === effectId);
+                if (!eff) return;
+
+                const isUnlocked = this.state.unlockedEffects.includes(effectId) || this.state.level >= eff.reqLevel;
+
+                if (isUnlocked) {
+                    if (!this.state.unlockedEffects.includes(effectId)) this.state.unlockedEffects.push(effectId);
+                    this.audio.playSoftTap();
+                    this.state.ambientEffect = effectId;
+                    this.canvas.setMode(effectId);
+                    this.saveState();
+                    this.renderSanctuary();
+                } else if (this.state.dewDrops >= eff.price) {
+                    this.state.dewDrops -= eff.price;
+                    this.state.unlockedEffects.push(effectId);
+                    this.state.ambientEffect = effectId;
+                    this.audio.playSingingBowlChime();
+                    this.canvas.setMode(effectId);
+                    this.saveState();
+                    this.renderAll();
+                    this.showToast(`✨ Atmósfera "${eff.name}" desbloqueada.`);
+                } else {
+                    this.showToast(`Necesitas Nivel ${eff.reqLevel} o ${eff.price} 💧 Gotas de Rocío.`);
+                }
+            }
+
+            renderSanctuary() {
+                const stage = this.getCurrentStageInfo();
+                const reqXp = this.getXpForNextLevel(this.state.level);
+                const pct = Math.min(100, Math.round((this.state.xp / reqXp) * 100));
+
+                document.getElementById('sanctuaryTreeTitle').textContent = `${stage.name} (Nivel ${this.state.level})`;
+                document.getElementById('sanctuaryXpNumbers').textContent = `${this.state.xp} / ${reqXp} XP`;
+                document.getElementById('sanctuaryXpBar').style.width = `${pct}%`;
+
+                document.getElementById('statDewDrops').textContent = `💧 ${this.state.dewDrops}`;
+                document.getElementById('statFocusMins').textContent = `${this.state.stats.focusMinutes} min`;
+                document.getElementById('statPomodorosCount').textContent = this.state.stats.pomodorosDone;
+
+                this.renderBonsaiSvg(this.state.level);
+
+                // Paletas de color
+                const themesGrid = document.getElementById('warmThemesGrid');
+                themesGrid.innerHTML = WARM_PALETTES.map(p => {
+                    const unlocked = this.state.unlockedThemes.includes(p.id) || this.state.level >= p.reqLevel;
+                    const active = this.state.theme === p.id;
+                    return `
+                        <div onclick="app.selectOrUnlockPalette('${p.id}')" class="warm-subcard p-4 rounded-2xl flex flex-col justify-between gap-3 cursor-pointer ${active ? 'border-2 border-[var(--accent-primary)]' : ''}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    ${p.swatches.map(c => `<span class="w-4 h-4 rounded-full border border-black/20" style="background:${c}"></span>`).join('')}
+                                </div>
+                                <span class="text-[11px] font-semibold">
+                                    ${active ? '✓ En uso' : unlocked ? 'Disponible' : `Nvl ${p.reqLevel} o 💧 ${p.price}`}
+                                </span>
+                            </div>
+                            <div>
+                                <div class="text-xs sm:text-sm font-semibold">${p.name}</div>
+                                <p class="text-[11px] text-muted-warm mt-0.5">${p.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Efectos ambientales
+                const effectsGrid = document.getElementById('ambientEffectsGrid');
+                effectsGrid.innerHTML = AMBIENT_EFFECTS_CATALOG.map(e => {
+                    const unlocked = this.state.unlockedEffects.includes(e.id) || this.state.level >= e.reqLevel;
+                    const active = this.state.ambientEffect === e.id;
+                    return `
+                        <div onclick="app.selectOrUnlockEffect('${e.id}')" class="warm-subcard p-3.5 rounded-2xl flex items-center justify-between gap-2 cursor-pointer ${active ? 'border-2 border-[var(--accent-primary)]' : ''}">
+                            <div>
+                                <div class="text-xs sm:text-sm font-semibold">${e.name}</div>
+                                <div class="text-[11px] text-muted-warm">${e.desc}</div>
+                            </div>
+                            <span class="text-[11px] font-semibold shrink-0">
+                                ${active ? '✓ Activo' : unlocked ? 'Usar' : `💧 ${e.price}`}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            /* ----------------------------------------------------------------
+               FUNCIONES DEL PANEL DE DEMOSTRACIÓN PARA EL PROFESOR
+               ---------------------------------------------------------------- */
+            startDemoPomodoro() {
+                this.switchMainView('study');
+                this.pauseTimer();
+                this.timerMode = 'pomodoro';
+                this.totalSeconds = 3;
+                this.secondsLeft = 3;
+                this.updateTimerUI();
+                this.startTimer();
+                this.showToast('⚡ Demo Profesor: Pomodoro de 3 segundos en marcha.');
+            }
+
+            jumpToBreakExperience(mode) {
+                this.setTimerMode(mode, false);
+                this.startTimer();
+                this.switchMainView('break');
+                this.setBreakSubTab(mode === 'longBreak' ? 'long15' : 'short5', false);
+                this.showToast(mode === 'longBreak' ? '🍲 Mostrando planes para Pausa Larga (15 min).' : '🍵 Mostrando planes para Pausa Corta (5 min).');
+            }
+
+            grantDemoProgress() {
+                this.addProgress(150, 40);
+                this.switchMainView('sanctuary');
+            }
+
+            unlockAllSanctuary() {
+                this.state.level = 5;
+                this.state.dewDrops += 300;
+                this.state.unlockedThemes = WARM_PALETTES.map(p => p.id);
+                this.state.unlockedEffects = AMBIENT_EFFECTS_CATALOG.map(e => e.id);
+                this.audio.playSingingBowlChime();
+                this.saveState();
+                this.renderAll();
+                this.switchMainView('sanctuary');
+                this.showToast('🌸 Nivel 5 (Cerezo en Flor) y todas las paletas cálidas desbloqueadas.');
+            }
+
+            /* ----------------------------------------------------------------
+               MODALES DE CONFIGURACIÓN Y UTILIDADES
+               ---------------------------------------------------------------- */
+            openCustomTimeModal() {
+                this.audio.playSoftTap();
+                document.getElementById('inputFocusMins').value = this.state.durations.pomodoro;
+                document.getElementById('inputShortMins').value = this.state.durations.shortBreak;
+                document.getElementById('inputLongMins').value = this.state.durations.longBreak;
+                const modal = document.getElementById('customTimeModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            closeCustomTimeModal() {
+                const modal = document.getElementById('customTimeModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            saveCustomTimes() {
+                const p = Math.max(1, Math.min(120, parseInt(document.getElementById('inputFocusMins').value) || 25));
+                const s = Math.max(1, Math.min(30, parseInt(document.getElementById('inputShortMins').value) || 5));
+                const l = Math.max(1, Math.min(60, parseInt(document.getElementById('inputLongMins').value) || 15));
+                this.state.durations = { pomodoro: p, shortBreak: s, longBreak: l };
+                this.saveState();
+                this.setTimerMode(this.timerMode, false);
+                this.closeCustomTimeModal();
+                this.showToast('⏱️ Duraciones actualizadas.');
+            }
+
+            openResetModal() {
+                const modal = document.getElementById('resetModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            closeResetModal() {
+                const modal = document.getElementById('resetModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            confirmReset() {
+                localStorage.removeItem(this.storageKey);
+                this.state = this.getDefaultState();
+                this.closeResetModal();
+                this.initUI();
+                this.showToast('🌱 Santuario restaurado al estado inicial.');
+            }
+
+            showToast(msg) {
+                const area = document.getElementById('toastArea');
+                const el = document.createElement('div');
+                el.className = 'warm-card px-4 py-3 rounded-2xl text-xs sm:text-sm font-medium pointer-events-auto transition-all duration-300';
+                el.textContent = msg;
+                area.appendChild(el);
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(8px)';
+                    setTimeout(() => el.remove(), 300);
+                }, 3200);
+            }
+
+            escapeHtml(str) {
+                const d = document.createElement('div');
+                d.textContent = str;
+                return d.innerHTML;
+            }
+        }
+
+        let app;
+        window.onload = function () {
+            app = new KomorebiFocusApp();
+        };
+    </script>
+</body>
+</html>
